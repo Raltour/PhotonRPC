@@ -3,4 +3,8 @@ project(TinyRPC)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(RPC main.cpp)
+include_directories(${PROJECT_SOURCE_DIR}/include)
+
+file(GLOB_RECURSE SOURCES "src/*.cpp")
+
+add_executable(RPC ${SOURCES})

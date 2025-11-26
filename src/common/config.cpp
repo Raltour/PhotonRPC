@@ -1,12 +1,12 @@
-#include "TinyRPC/common/Config.h"
-#include "TinyRPC/common/ConsoleLogger.h"
+#include "TinyRPC/common/config.h"
+#include "TinyRPC/common/console_logger.h"
 
 #include "tinyxml2/tinyxml2.h"
 
 #include <iostream>
 
 
-Config& Config::get_instance() {
+Config& Config::GetInstance() {
   static Config config;
   return config;
 }

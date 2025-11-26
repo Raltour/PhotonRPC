@@ -1,4 +1,4 @@
-#include "TinyRPC/common/ConsoleLogger.h"
+#include "TinyRPC/common/console_logger.h"
 
 void ConsoleLogger::log(LogLevel level, const std::string& message,
                         const char* file, int line) {

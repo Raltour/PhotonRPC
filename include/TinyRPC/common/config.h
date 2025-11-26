@@ -5,7 +5,7 @@
 
 class Config {
 public:
-  static Config& get_instance();
+  static Config& GetInstance();
 
   std::string server_host_;
   int server_port_;

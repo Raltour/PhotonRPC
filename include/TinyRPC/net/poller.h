@@ -16,6 +16,8 @@ public:
   int poll(int timeout);
 
   void register_channel(Channel* channel);
+  epoll_event* get_return_events();
+  Channel* get_channel_by_fd(int fd);
 
 private:
   // std::vector<epoll_event> return_events_;

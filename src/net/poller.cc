@@ -13,7 +13,7 @@ int Poller::poll(int timeout) {
     LOG_ERROR("epoll failure");
     return -1;
   }
-  return 0;
+  return ret;
 }
 
 void Poller::register_channel(Channel* channel) {
@@ -27,4 +27,12 @@ void Poller::register_channel(Channel* channel) {
 
   epoll_ctl(this->epoll_fd_, EPOLL_CTL_ADD, channel->event_.data.fd,
             &channel->event_);
+}
+
+epoll_event* Poller::get_return_events() {
+  return this->return_events_;
+}
+
+Channel* Poller::get_channel_by_fd(int fd) {
+  return fd_channel_map_.find(fd)->second;
 }

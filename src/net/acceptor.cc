@@ -2,6 +2,7 @@
 
 #include "TinyRPC/net/acceptor.h"
 #include "TinyRPC/common/console_logger.h"
+#include "TinyRPC/common/config.h"
 
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -9,7 +10,10 @@
 #include <string.h>
 #include <fcntl.h>
 
-Acceptor::Acceptor(const char* ip, int port) {
+Acceptor::Acceptor() {
+  const char* ip = Config::GetInstance().server_host_.c_str();
+  int port = Config::GetInstance().server_port_;
+
   struct sockaddr_in address;
   bzero(&address, sizeof(address));
   address.sin_family = AF_INET;

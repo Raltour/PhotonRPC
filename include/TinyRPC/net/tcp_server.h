@@ -6,7 +6,7 @@
 
 class TcpServer {
  public:
-  TcpServer(const char* ip, int port);
+  TcpServer();
   void RunLoop();
   void AddChannel(Channel* channel);
 

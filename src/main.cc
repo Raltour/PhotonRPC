@@ -1,10 +1,13 @@
 #include "TinyRPC/common/console_logger.h"
-#include "TinyRPC/common/config.h"
+#include "TinyRPC/net/tcp_server.h"
+#include <iostream>
 
 int main() {
   LOG_INFO("Start Server");
 
-  Config::GetInstance();
+  TcpServer server;
+
+  server.RunLoop();
 
   return 0;
 }

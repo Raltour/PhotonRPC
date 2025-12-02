@@ -9,7 +9,12 @@
 
 class TcpServer {
 public:
-  TcpServer();
+  // TcpServer();
+
+  TcpServer(std::function<void()> reactor_read,
+            std::function<void()> reactor_write);
+
+  TcpServer() = delete;
 
   void RunLoop();
 
@@ -17,11 +22,12 @@ public:
 
 private:
   EventLoop event_loop_;
-  Acceptor acceptor_;
-  std::map<int, std::unique_ptr<TcpConnection> > fd_connection_map_;
 
   std::function<void()> reactor_read_;
   std::function<void()> reactor_write_;
+
+  Acceptor acceptor_;
+  std::map<int, std::unique_ptr<TcpConnection> > fd_connection_map_;
 };
 
 #endif  //TINYRPC_TCP_SERVER_H

@@ -4,7 +4,14 @@
 int main() {
   LOG_INFO("Start Server");
 
-  TcpServer server;
+  TcpServer server(
+      []() {
+        return;
+      },
+      []() {
+        return;
+      }
+      );
 
   server.RunLoop();
 

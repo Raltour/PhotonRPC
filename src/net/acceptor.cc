@@ -10,8 +10,10 @@
 #include <string.h>
 #include <fcntl.h>
 
-Acceptor::Acceptor(std::function<void(Channel*)> start_listen_callback_, std::function<void(int)> new_connection_callback)
-  : start_listen_callback_(start_listen_callback_), new_connection_callback_(new_connection_callback){
+Acceptor::Acceptor(std::function<void(Channel*)> start_listen_callback_,
+                   std::function<void(int)> new_connection_callback)
+  : start_listen_callback_(start_listen_callback_),
+    new_connection_callback_(new_connection_callback) {
 
   const char* ip = Config::GetInstance().server_host_.c_str();
   int port = Config::GetInstance().server_port_;

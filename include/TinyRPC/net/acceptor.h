@@ -9,6 +9,8 @@ public:
 
   Acceptor(std::function<void(Channel*)>, std::function<void(int)>);
 
+  Acceptor() = delete;
+
   // void set_new_connection_callback(std::function<void(int)> callback);
 
   // void set_start_listen_callback(std::function<void(Channel*)> callback);

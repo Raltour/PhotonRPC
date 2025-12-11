@@ -68,16 +68,3 @@ void Acceptor::set_start_listen_callback(
     std::function<void(Channel*)> callback) {
   start_listen_callback_ = callback;
 }
-
-// void Acceptor::listen_loop() {
-//   while (true) {
-//     struct sockaddr_in client_addr;
-//     socklen_t client_addr_len = sizeof(client_addr);
-//     int connfd = accept(listenfd_, (struct sockaddr *) &client_addr, &client_addr_len);
-//     if (connfd < 0) {
-//       LOG_ERROR("accept failure");
-//       return;
-//     }
-//     new_connection_callback_();
-//   }
-// }

@@ -2,7 +2,7 @@
 #define TINYRPC_TCP_SERVER_H
 
 #include "TinyRPC/net/event_loop.h"
-#include "TinyRpc/net/acceptor.h"
+#include "TinyRPC/net/acceptor.h"
 #include "TinyRPC/net/tcp_connection.h"
 
 #include <memory>

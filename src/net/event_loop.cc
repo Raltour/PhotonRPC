@@ -19,10 +19,10 @@ void EventLoop::Loop() {
       Channel* channel = poller_.get_channel_by_fd(sockfd);
 
       if (event_flag & EPOLLIN) {
-        channel->read_callback();
+        channel->HandleRead();
       }
       if (event_flag & EPOLLOUT) {
-        channel->write_callback();
+        channel->HandleWrite();
       }
     }
   }

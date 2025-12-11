@@ -18,15 +18,16 @@ int Poller::poll(int timeout) {
 
 void Poller::register_channel(Channel* channel) {
   // this->fd_channel_map_.insert({channel.event_.data.fd, &channel});
-  int fd = channel->event_.data.fd;
+  // int fd = channel->event_.data.fd;
+  int fd = channel->event()->data.fd;
   this->fd_channel_map_.emplace(fd, channel);
 
   // epoll_event event;
   // event.data.fd = channel.fd_;
   // event.events = channel.events_;
 
-  epoll_ctl(this->epoll_fd_, EPOLL_CTL_ADD, channel->event_.data.fd,
-            &channel->event_);
+  epoll_ctl(this->epoll_fd_, EPOLL_CTL_ADD, channel->event()->data.fd,
+            channel->event());
 }
 
 epoll_event* Poller::get_return_events() {

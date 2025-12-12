@@ -6,7 +6,7 @@
 #include "TinyRPC/common/console_logger.h"
 
 
-TcpConnection::TcpConnection(int connect_fd, std::function<void()> service,
+TcpConnection::TcpConnection(int connect_fd, std::function<void(char*, char*)> service,
                              std::function<void(Channel*)>
                              add_connection_callback)
   : service_(service) {
@@ -44,11 +44,14 @@ void TcpConnection::HandleRead() {
                        0);
   if (read_size > 0) {
     LOG_DEBUG("TcpConnection received data");
-    service_();
+    service_(read_buffer_, write_buffer_);
+    HandleWrite();
   } else {
     LOG_DEBUG("TcpConnection connection closed");
     close(channel_.event()->data.fd);
   }
 }
 
-void TcpConnection::HandleWrite() {}
+void TcpConnection::HandleWrite() {
+  send(channel_.event()->data.fd, write_buffer_, max_buffer_size, 0);
+}

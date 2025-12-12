@@ -3,7 +3,7 @@
 #include "TinyRPC/common/console_logger.h"
 
 
-TcpServer::TcpServer(std::function<void()> service)
+TcpServer::TcpServer(std::function<void(char*, char*)> service)
   : service_(service) {
 
   acceptor_.set_start_listen_callback([this](Channel* channel) {

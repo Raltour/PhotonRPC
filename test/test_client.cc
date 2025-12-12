@@ -26,6 +26,12 @@ int main() {
     printf("error!\n");
   }
 
+  const char* message = "Hello, TinyRPC!";
+  send(sockfd, message, strlen(message), 0);
+  char buffer[1024];
+  recv(sockfd, buffer, 1024, 0);
+  std::cout << "Received from server: " << buffer << std::endl;
+
   close(sockfd);
   return 0;
 }

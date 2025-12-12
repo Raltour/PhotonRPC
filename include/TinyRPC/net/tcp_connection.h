@@ -7,7 +7,7 @@
 
 class TcpConnection {
 public:
-  TcpConnection(int connect_fd, std::function<void()> service,
+  TcpConnection(int connect_fd, std::function<void(char*, char*)> service,
                 std::function<void(Channel*)> add_connection_callback);
 
   TcpConnection() = delete;
@@ -27,7 +27,7 @@ private:
 
   void HandleWrite();
 
-  std::function<void()> service_;
+  std::function<void(char* read, char* write)> service_;
   std::function<void(Channel*)> add_connection_callback_;
   std::function<void(Channel*)> close_callback_;
 

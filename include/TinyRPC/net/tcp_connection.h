@@ -14,6 +14,8 @@ public:
 
   ~TcpConnection();
 
+  void set_close_callback(std::function<void(Channel*)> close_callback);
+
 private:
   Channel channel_;
 
@@ -27,6 +29,7 @@ private:
 
   std::function<void()> service_;
   std::function<void(Channel*)> add_connection_callback_;
+  std::function<void(Channel*)> close_callback_;
 
 };
 

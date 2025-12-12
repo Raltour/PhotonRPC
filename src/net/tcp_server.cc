@@ -21,6 +21,11 @@ TcpServer::TcpServer(std::function<void()> service)
                 [this](Channel* channel) {
                   event_loop_.AddChannel(channel);
                 })});
+        fd_connection_map_.find(connect_fd)->second->set_close_callback(
+            [this](Channel* channel) {
+              this->event_loop_.RemoveChannel(channel);
+              this->fd_connection_map_.erase(channel->event()->data.fd);
+            });
 
         LOG_DEBUG(
             "TcpServer: New TcpConnection with fd: " + std::to_string(

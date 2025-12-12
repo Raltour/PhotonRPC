@@ -1,5 +1,6 @@
 #include "TinyRPC/net/tcp_connection.h"
 
+#include <unistd.h>
 #include <sys/socket.h>
 
 #include "TinyRPC/common/console_logger.h"
@@ -32,11 +33,22 @@ TcpConnection::~TcpConnection() {
   free(read_buffer_);
 }
 
+void TcpConnection::set_close_callback(
+    std::function<void(Channel*)> close_callback) {
+  close_callback_ = close_callback;
+}
+
 
 void TcpConnection::HandleRead() {
-  recv(channel_.event()->data.fd, read_buffer_, max_buffer_size, 0);
-  LOG_DEBUG("TcpConnection received data");
-  service_();
+  int read_size = recv(channel_.event()->data.fd, read_buffer_, max_buffer_size,
+                       0);
+  if (read_size > 0) {
+    LOG_DEBUG("TcpConnection received data");
+    service_();
+  } else {
+    LOG_DEBUG("TcpConnection connection closed");
+    close(channel_.event()->data.fd);
+  }
 }
 
 void TcpConnection::HandleWrite() {}

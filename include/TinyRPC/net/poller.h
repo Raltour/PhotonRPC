@@ -15,7 +15,9 @@ public:
 
   int poll(int timeout);
 
-  void register_channel(Channel* channel);
+  void RegisterChannel(Channel* channel);
+
+  void RemoveChannel(Channel* channel);
 
   epoll_event* get_return_events();
 

@@ -29,5 +29,9 @@ void EventLoop::Loop() {
 }
 
 void EventLoop::AddChannel(Channel* channel) {
-  poller_.register_channel(channel);
+  poller_.RegisterChannel(channel);
+}
+
+void EventLoop::RemoveChannel(Channel* channel) {
+  poller_.RemoveChannel(channel);
 }

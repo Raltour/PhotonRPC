@@ -11,6 +11,8 @@ public:
 
   void AddChannel(Channel* channel);
 
+  void RemoveChannel(Channel* channel);
+
 private:
   Poller poller_;
 

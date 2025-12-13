@@ -1,18 +1,19 @@
 #ifndef TINYRPC_TCP_CONNECTION_H
 #define TINYRPC_TCP_CONNECTION_H
 
+#include "TinyRPC/net/channel.h"
+#include "TinyRPC/net/buffer.h"
+
 #include <string>
 
-#include "TinyRPC/net/channel.h"
 
 class TcpConnection {
 public:
-  TcpConnection(int connect_fd, std::function<void(char*, char*)> service,
+  TcpConnection(int connect_fd,
+                std::function<void(std::string&, std::string&)> service,
                 std::function<void(Channel*)> add_connection_callback);
 
   TcpConnection() = delete;
-
-  ~TcpConnection();
 
   void set_close_callback(std::function<void(Channel*)> close_callback);
 
@@ -20,14 +21,18 @@ private:
   Channel channel_;
 
   const int max_buffer_size = 1024;
-  char* read_buffer_;
-  char* write_buffer_;
+  Buffer input_buffer_;
+  Buffer output_buffer_;
 
+
+  // 注册给epoll的函数
   void HandleRead();
 
+  //注册给epoll的函数
   void HandleWrite();
 
-  std::function<void(char* read, char* write)> service_;
+  // std::function<void(char* read, char* write)> service_;
+  std::function<void(std::string& read, std::string& write)> service_;
   std::function<void(Channel*)> add_connection_callback_;
   std::function<void(Channel*)> close_callback_;
 

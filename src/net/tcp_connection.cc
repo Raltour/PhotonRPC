@@ -1,18 +1,17 @@
 #include "TinyRPC/net/tcp_connection.h"
+#include "TinyRPC/common/console_logger.h"
+#include "TinyRPC/net/codec.h"
 
 #include <unistd.h>
-#include <sys/socket.h>
 
-#include "TinyRPC/common/console_logger.h"
+#include <cstring>
 
-
-TcpConnection::TcpConnection(int connect_fd, std::function<void(char*, char*)> service,
+TcpConnection::TcpConnection(int connect_fd,
+                             std::function<void(std::string&, std::string&)>
+                             service,
                              std::function<void(Channel*)>
                              add_connection_callback)
   : service_(service) {
-  read_buffer_ = new char[max_buffer_size];
-  write_buffer_ = new char[max_buffer_size];
-
   channel_ = Channel(connect_fd, true, false);
   channel_.set_handle_read([this] {
     LOG_DEBUG("TcpConnection HandleRead called");
@@ -28,24 +27,27 @@ TcpConnection::TcpConnection(int connect_fd, std::function<void(char*, char*)> s
 
 }
 
-TcpConnection::~TcpConnection() {
-  free(write_buffer_);
-  free(read_buffer_);
-}
-
 void TcpConnection::set_close_callback(
     std::function<void(Channel*)> close_callback) {
   close_callback_ = close_callback;
 }
 
-
 void TcpConnection::HandleRead() {
-  int read_size = recv(channel_.event()->data.fd, read_buffer_, max_buffer_size,
-                       0);
-  if (read_size > 0) {
+  if (input_buffer_.ReceiveFd(channel_.event()->data.fd)) {
     LOG_DEBUG("TcpConnection received data");
-    service_(read_buffer_, write_buffer_);
-    HandleWrite();
+    std::string decoded_data = Codec::decode(input_buffer_.PeekData(),
+                                             input_buffer_.GetSize());
+    if (decoded_data.size() > 0) {
+      input_buffer_.RetrieveData(decoded_data.size() + 4);
+      std::string response_data;
+      service_(decoded_data, response_data);
+      LOG_DEBUG(response_data);
+      std::string encoded_data = Codec::encode(response_data);
+      output_buffer_.WriteData(encoded_data.data(), encoded_data.size());
+      while (!output_buffer_.SendFd(channel_.event()->data.fd)) {
+        LOG_DEBUG("TcpConnection finish send data");
+      }
+    }
   } else {
     LOG_DEBUG("TcpConnection connection closed");
     close(channel_.event()->data.fd);
@@ -53,5 +55,5 @@ void TcpConnection::HandleRead() {
 }
 
 void TcpConnection::HandleWrite() {
-  send(channel_.event()->data.fd, write_buffer_, max_buffer_size, 0);
+  // send(channel_.event()->data.fd, output_buffer_.PeekData(), max_buffer_size, 0);
 }

@@ -7,11 +7,13 @@ int main() {
   LOG_INFO("Start Server");
 
   TcpServer server(
-    [] (char* read, char* write) {
-      LOG_DEBUG("Reactor Service");
-      memcpy(write, read, strlen(read));
-    }
-  );
+      [](std::string& read, std::string& write) {
+        LOG_DEBUG("Reactor Service");
+        write = read;
+        // memcpy(write, read, strlen(read));
+        // write = "12345";
+      }
+      );
 
   server.RunLoop();
 

@@ -37,5 +37,10 @@ epoll_event* Poller::get_return_events() {
 }
 
 Channel* Poller::get_channel_by_fd(int fd) {
-  return fd_channel_map_.find(fd)->second;
+  auto result = this->fd_channel_map_.find(fd);
+  if (result != this->fd_channel_map_.end()) {
+    return result->second;
+  } else {
+    return nullptr;
+  }
 }

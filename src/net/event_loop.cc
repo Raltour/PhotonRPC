@@ -1,8 +1,6 @@
 #include "TinyRPC/net/event_loop.h"
 
-EventLoop::EventLoop() {
-  poller_ = Poller();
-}
+EventLoop::EventLoop() {}
 
 void EventLoop::Loop() {
   while (true) {

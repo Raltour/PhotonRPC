@@ -35,18 +35,18 @@ void TcpConnection::set_close_callback(
 void TcpConnection::HandleRead() {
   if (input_buffer_.ReceiveFd(channel_.event()->data.fd)) {
     LOG_DEBUG("TcpConnection received data");
-    std::string decoded_data = Codec::decode(input_buffer_.PeekData(),
-                                             input_buffer_.GetSize());
-    if (decoded_data.size() > 0) {
+    std::string decoded_data;
+    while ((decoded_data = Codec::decode(input_buffer_.PeekData(),
+                                         input_buffer_.GetSize())).size() > 0) {
       input_buffer_.RetrieveData(decoded_data.size() + 4);
       std::string response_data;
       service_(decoded_data, response_data);
       LOG_DEBUG(response_data);
       std::string encoded_data = Codec::encode(response_data);
-      output_buffer_.WriteData(encoded_data.data(), encoded_data.size());
-      while (!output_buffer_.SendFd(channel_.event()->data.fd)) {
-        LOG_DEBUG("TcpConnection finish send data");
-      }
+      output_buffer_.WriteData(encoded_data, encoded_data.size());
+      while (!output_buffer_.SendFd(channel_.event()->data.fd)) {}
+      LOG_DEBUG("TcpConnection finish send data");
+      decoded_data.clear();
     }
   } else {
     LOG_DEBUG("TcpConnection connection closed");

@@ -9,11 +9,15 @@ Buffer::Buffer()
   buffer_->resize(1024);
 }
 
-void Buffer::WriteData(char* data, int size) {
-  write_index_ += size;
+void Buffer::WriteData(std::string& data, int size) {
+  std::vector<char>::iterator iter = buffer_->begin() + write_index_;
   for (int i = 0; i < size; ++i) {
-    buffer_->push_back(data[i]);
+    // buffer_->push_back(data[i]);
+    // buffer_->push_back(data.at(i));
+    *iter = data[i];
+    ++iter;
   }
+  write_index_ += size;
 }
 
 void Buffer::RetrieveData(int size) {

@@ -21,7 +21,7 @@ inline std::string Codec::decode(const char* data, int size) {
     }
     return decoded_data;
   } else {
-    return nullptr;
+    return {};
   }
 }
 

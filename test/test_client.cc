@@ -36,9 +36,12 @@ int main() {
     send(sockfd, encoded_message.data(), encoded_message.size(), 0);
   }
 
-  // char buffer[1024];
-  // recv(sockfd, buffer, 1024, 0);
-  // std::cout << "Received from server: " << buffer << std::endl;
+  for (int i = 0; i < 10; i++) {
+    char buffer[1024];
+    int read_size = recv(sockfd, buffer, 1024, 0);
+    buffer[read_size] = '\0';
+    std::cout << "Received from server: " << buffer + 4 << std::endl;
+  }
 
   close(sockfd);
   return 0;

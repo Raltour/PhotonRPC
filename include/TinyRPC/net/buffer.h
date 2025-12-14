@@ -8,7 +8,7 @@ class Buffer {
 public:
   Buffer();
 
-  void WriteData(char* data, int size);
+  void WriteData(std::string& data, int size);
 
   void RetrieveData(int size);
 

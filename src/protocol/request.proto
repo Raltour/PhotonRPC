@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package rpc;
-
-message Request {
-  uint32 request_id = 1;
-  string method_name = 2;
-  string method_args = 3;
-}

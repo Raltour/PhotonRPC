@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package rpc;
-
-message AddMethod {
-  int32 arg1 = 1;
-  int32 arg2 = 2;
-  int32 ret1 = 3;
-}

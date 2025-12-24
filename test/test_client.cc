@@ -1,17 +1,17 @@
-#include <assert.h>
 #include <arpa/inet.h>
+#include <assert.h>
 #include <netinet/in.h>
-#include <sys/socket.h>
-#include <iostream>
 #include <signal.h>
 #include <stdlib.h>
 #include <strings.h>
-#include <cstring>
+#include <sys/socket.h>
 #include <unistd.h>
+#include <cstring>
+#include <iostream>
 
-#include "TinyRPC/protocol/request.pb.h"
-#include "TinyRPC/protocol/add.pb.h"
 #include "TinyRPC/net/codec.h"
+#include "TinyRPC/protocol/add_service.pb.h"
+#include "TinyRPC/protocol/rpc_message.pb.h"
 
 int main() {
   const char* ip = "127.0.0.1";
@@ -33,14 +33,14 @@ int main() {
 
   int arg1 = 5;
   int arg2 = 6;
-  rpc::Request request;
-  request.set_request_id(1);
+  rpc::RpcMessage request;
+  request.set_id(1);
+  request.set_type(rpc::RPC_TYPE_REQUEST);
   request.set_method_name("add");
-  rpc::AddMethod add_method;
-  add_method.set_arg1(arg1);
-  add_method.set_arg2(arg2);
-  add_method.set_ret1(0);
-  request.set_method_args(add_method.SerializeAsString());
+  rpc::AddRequest add_request;
+  add_request.set_a(arg1);
+  add_request.set_b(arg2);
+  request.set_request(add_request.SerializeAsString());
   std::string message = request.SerializeAsString();
 
   std::string encoded_message = Codec::encode(message);
@@ -48,12 +48,14 @@ int main() {
   char buffer[1024];
   int read_size = recv(sockfd, buffer, 1024, 0);
   buffer[read_size] = '\0';
-  std::string response = std::string(buffer + 4);
+  std::string recv_data = std::string(buffer + 4);
 
-  rpc::AddMethod response_method;
-  response_method.ParseFromString(response);
+  rpc::RpcMessage response;
+  response.ParseFromString(recv_data);
+  rpc::AddResponse add_response;
+  add_response.ParseFromString(response.response());
 
-  std::cout << "Received from server: " << response_method.ret1() << std::endl;
+  std::cout << "Received from server: " << add_response.result() << std::endl;
 
   close(sockfd);
   return 0;

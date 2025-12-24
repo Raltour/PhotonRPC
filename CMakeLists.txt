@@ -29,5 +29,5 @@ target_link_libraries(RPC PRIVATE tinyxml2 protobuf::libprotobuf)
 
 
 # -------- TestClient --------
-add_executable(TestClient ${PROJECT_SOURCE_DIR}/test/test_client.cc src/protocol/request.pb.cc src/protocol/add.pb.cc)
+add_executable(TestClient ${PROJECT_SOURCE_DIR}/test/test_client.cc src/protocol/add_service.pb.cc src/protocol/rpc_message.pb.cc)
 target_link_libraries(TestClient PRIVATE protobuf::libprotobuf)

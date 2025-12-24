@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package rpc;
+
+enum MessageType {
+  RPC_TYPE_UNKNOW = 0;
+  RPC_TYPE_REQUEST = 1;
+  RPC_TYPE_RESPONSE = 2;
+}
+
+message RpcMessage {
+  uint32 id = 1;
+  MessageType type = 2;
+  string method_name = 3;
+
+  bytes request = 4;
+  bytes response = 5;
+}

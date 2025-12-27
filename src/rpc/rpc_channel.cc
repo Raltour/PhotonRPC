@@ -1,3 +1,7 @@
+#include "TinyRPC/rpc/rpc_channel.h"
+#include "TinyRPC/protocol/rpc_message.pb.h"
+#include "TinyRPC/net/codec.h"
+
 #include <arpa/inet.h>
 #include <assert.h>
 #include <netinet/in.h>
@@ -9,16 +13,15 @@
 #include <cstring>
 #include <iostream>
 
-#include "TinyRPC/net/codec.h"
-#include "TinyRPC/protocol/add_service.pb.h"
-#include "TinyRPC/protocol/rpc_message.pb.h"
-#include "TinyRPC/rpc/rpc_channel.h"
 
-int main() {
+void RpcChannel::CallMethod(const google::protobuf::MethodDescriptor* method,
+                            google::protobuf::RpcController* controller,
+                            const google::protobuf::Message* request,
+                            google::protobuf::Message* response,
+                            google::protobuf::Closure* done) {
+  // TODO: implement a tcp_client to maintain the tcp connection for better performance
   const char* ip = "127.0.0.1";
   int port = 12345;
-
-  rpc::AddService_Stub(nullptr);
 
   struct sockaddr_in server_address;
   bzero(&server_address, sizeof(server_address));
@@ -34,32 +37,24 @@ int main() {
     printf("error!\n");
   }
 
-  int arg1 = 5;
-  int arg2 = 6;
-  rpc::RpcMessage request;
-  request.set_id(1);
-  request.set_type(rpc::RPC_TYPE_REQUEST);
-  request.set_method_name("add");
-  rpc::AddRequest add_request;
-  add_request.set_a(arg1);
-  add_request.set_b(arg2);
-  request.set_request(add_request.SerializeAsString());
-  std::string message = request.SerializeAsString();
+  rpc::RpcMessage rpc_message;
+  rpc_message.set_id(1);
+  rpc_message.set_type(rpc::RPC_TYPE_REQUEST);
+  rpc_message.set_method_name("add");
+  rpc_message.set_request(request->SerializeAsString());
+  std::string message = rpc_message.SerializeAsString();
 
   std::string encoded_message = Codec::encode(message);
   send(sockfd, encoded_message.c_str(), encoded_message.size(), 0);
+
   char buffer[1024];
   int read_size = recv(sockfd, buffer, 1024, 0);
   buffer[read_size] = '\0';
   std::string recv_data = std::string(buffer + 4);
 
-  rpc::RpcMessage response;
-  response.ParseFromString(recv_data);
-  rpc::AddResponse add_response;
-  add_response.ParseFromString(response.response());
+  response->ParseFromString(recv_data);
 
-  std::cout << "Received from server: " << add_response.result() << std::endl;
+  std::cout << "Received from server" << std::endl;
 
   close(sockfd);
-  return 0;
 }

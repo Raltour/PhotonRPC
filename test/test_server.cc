@@ -1,6 +1,7 @@
 #include "TinyRPC/rpc/rpc_server.h"
 #include "TinyRPC/protocol/rpc_message.pb.h"
 #include "TinyRPC/protocol/add_service.pb.h"
+#include "TinyRPC/rpc/rpc_channel.h"
 
 class AddServiceImpl : public rpc::AddService {
  public:

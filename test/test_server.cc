@@ -1,7 +1,7 @@
 #include "TinyRPC/rpc/rpc_server.h"
 #include "TinyRPC/protocol/rpc_message.pb.h"
-#include "TinyRPC/protocol/echo_service.pb.h"
-#include "TinyRPC/protocol/calculate_service.pb.h"
+#include "echo_service.pb.h"
+#include "calculate_service.pb.h"
 #include "TinyRPC/rpc/rpc_channel.h"
 #include "TinyRPC/common/console_logger.h"
 

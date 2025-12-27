@@ -1,9 +1,8 @@
 #include <iostream>
 
-// #include "TinyRPC/protocol/add_service.pb.h"
 #include "TinyRPC/rpc/rpc_channel.h"
-#include "TinyRPC/protocol/echo_service.pb.h"
-#include "TinyRPC/protocol/calculate_service.pb.h"
+#include "echo_service.pb.h"
+#include "calculate_service.pb.h"
 
 int main() {
   RpcChannel channel;

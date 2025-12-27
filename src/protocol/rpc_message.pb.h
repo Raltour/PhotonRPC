@@ -204,13 +204,28 @@ class RpcMessage final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kMethodNameFieldNumber = 3,
-    kRequestFieldNumber = 4,
-    kResponseFieldNumber = 5,
+    kServiceNameFieldNumber = 3,
+    kMethodNameFieldNumber = 4,
+    kRequestFieldNumber = 5,
+    kResponseFieldNumber = 6,
     kIdFieldNumber = 1,
     kTypeFieldNumber = 2,
   };
-  // string method_name = 3;
+  // string service_name = 3;
+  void clear_service_name();
+  const std::string& service_name() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_service_name(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_service_name();
+  PROTOBUF_NODISCARD std::string* release_service_name();
+  void set_allocated_service_name(std::string* service_name);
+  private:
+  const std::string& _internal_service_name() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_service_name(const std::string& value);
+  std::string* _internal_mutable_service_name();
+  public:
+
+  // string method_name = 4;
   void clear_method_name();
   const std::string& method_name() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -224,7 +239,7 @@ class RpcMessage final :
   std::string* _internal_mutable_method_name();
   public:
 
-  // bytes request = 4;
+  // bytes request = 5;
   void clear_request();
   const std::string& request() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -238,7 +253,7 @@ class RpcMessage final :
   std::string* _internal_mutable_request();
   public:
 
-  // bytes response = 5;
+  // bytes response = 6;
   void clear_response();
   const std::string& response() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -278,6 +293,7 @@ class RpcMessage final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr service_name_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr method_name_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr request_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr response_;
@@ -339,7 +355,57 @@ inline void RpcMessage::set_type(::rpc::MessageType value) {
   // @@protoc_insertion_point(field_set:rpc.RpcMessage.type)
 }
 
-// string method_name = 3;
+// string service_name = 3;
+inline void RpcMessage::clear_service_name() {
+  _impl_.service_name_.ClearToEmpty();
+}
+inline const std::string& RpcMessage::service_name() const {
+  // @@protoc_insertion_point(field_get:rpc.RpcMessage.service_name)
+  return _internal_service_name();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void RpcMessage::set_service_name(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.service_name_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:rpc.RpcMessage.service_name)
+}
+inline std::string* RpcMessage::mutable_service_name() {
+  std::string* _s = _internal_mutable_service_name();
+  // @@protoc_insertion_point(field_mutable:rpc.RpcMessage.service_name)
+  return _s;
+}
+inline const std::string& RpcMessage::_internal_service_name() const {
+  return _impl_.service_name_.Get();
+}
+inline void RpcMessage::_internal_set_service_name(const std::string& value) {
+  
+  _impl_.service_name_.Set(value, GetArenaForAllocation());
+}
+inline std::string* RpcMessage::_internal_mutable_service_name() {
+  
+  return _impl_.service_name_.Mutable(GetArenaForAllocation());
+}
+inline std::string* RpcMessage::release_service_name() {
+  // @@protoc_insertion_point(field_release:rpc.RpcMessage.service_name)
+  return _impl_.service_name_.Release();
+}
+inline void RpcMessage::set_allocated_service_name(std::string* service_name) {
+  if (service_name != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.service_name_.SetAllocated(service_name, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.service_name_.IsDefault()) {
+    _impl_.service_name_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:rpc.RpcMessage.service_name)
+}
+
+// string method_name = 4;
 inline void RpcMessage::clear_method_name() {
   _impl_.method_name_.ClearToEmpty();
 }
@@ -389,7 +455,7 @@ inline void RpcMessage::set_allocated_method_name(std::string* method_name) {
   // @@protoc_insertion_point(field_set_allocated:rpc.RpcMessage.method_name)
 }
 
-// bytes request = 4;
+// bytes request = 5;
 inline void RpcMessage::clear_request() {
   _impl_.request_.ClearToEmpty();
 }
@@ -439,7 +505,7 @@ inline void RpcMessage::set_allocated_request(std::string* request) {
   // @@protoc_insertion_point(field_set_allocated:rpc.RpcMessage.request)
 }
 
-// bytes response = 5;
+// bytes response = 6;
 inline void RpcMessage::clear_response() {
   _impl_.response_.ClearToEmpty();
 }

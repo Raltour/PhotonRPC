@@ -40,7 +40,8 @@ void RpcChannel::CallMethod(const google::protobuf::MethodDescriptor* method,
   rpc::RpcMessage rpc_message;
   rpc_message.set_id(1);
   rpc_message.set_type(rpc::RPC_TYPE_REQUEST);
-  rpc_message.set_method_name("add");
+  rpc_message.set_service_name("AddService");
+  rpc_message.set_method_name("Add");
   rpc_message.set_request(request->SerializeAsString());
   std::string message = rpc_message.SerializeAsString();
 
@@ -52,9 +53,8 @@ void RpcChannel::CallMethod(const google::protobuf::MethodDescriptor* method,
   buffer[read_size] = '\0';
   std::string recv_data = std::string(buffer + 4);
 
-  response->ParseFromString(recv_data);
-
-  std::cout << "Received from server" << std::endl;
+  rpc_message.ParseFromString(recv_data);
+  response->ParseFromString(rpc_message.response());
 
   close(sockfd);
 }

@@ -13,18 +13,27 @@ void RpcServer::StartServer() {
   tcp_server_.RunLoop();
 }
 
-void RpcServer::ServiceRegister(std::string method_name,
-                                std::function<std::string(std::string)> service_function) {
-  service_map_.emplace(method_name, service_function);
+void RpcServer::ServiceRegister(google::protobuf::Service* service) {
+  service_map_.emplace(service->GetDescriptor()->name(), service);
 }
 
 void RpcServer::HandleRequest(std::string& request, std::string& response) {
   rpc::RpcMessage request_message;
   request_message.ParseFromString(request);
 
+  auto service = service_map_.find(request_message.service_name())->second;
+  auto service_desc = service->GetDescriptor();
+  auto method_desc = service_desc->FindMethodByName(request_message.method_name());
+
+  auto method_request = service->GetRequestPrototype(method_desc).New();
+  auto method_response = service->GetResponsePrototype(method_desc).New();
+  method_request->ParseFromString(request_message.request());
+
+  service->CallMethod(method_desc, nullptr, method_request, method_response, nullptr);
+
   rpc::RpcMessage response_message;
   response_message.set_id(request_message.id());
   request_message.set_type(rpc::RPC_TYPE_RESPONSE);
-  request_message.set_response(service_map_[request_message.method_name()](request_message.request()));
+  request_message.set_response(method_response->SerializeAsString());
   request_message.SerializeToString(&response);
 }

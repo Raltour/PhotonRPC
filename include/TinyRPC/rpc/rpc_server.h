@@ -1,9 +1,11 @@
 #ifndef TINYRPC_RPC_SERVER_H
 #define TINYRPC_RPC_SERVER_H
 
-#include "TinyRPC/protocol/rpc_message.pb.h"
-#include "TinyRPC/net/tcp_server.h"
+#include <google/protobuf/service.h>
+
 #include <string>
+#include "TinyRPC/net/tcp_server.h"
+#include "TinyRPC/protocol/rpc_message.pb.h"
 
 class RpcServer {
 public:
@@ -11,14 +13,14 @@ public:
 
   void StartServer();
 
-  void ServiceRegister(std::string, std::function<std::string(std::string)>);
+  void ServiceRegister(google::protobuf::Service*);
 
 private:
   TcpServer tcp_server_;
 
   void HandleRequest(std::string& request, std::string& response);
 
-  std::map<std::string, std::function<std::string(std::string)>> service_map_;
+  std::map<std::string, google::protobuf::Service*> service_map_;
 
 };
 

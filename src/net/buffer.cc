@@ -8,6 +8,11 @@ Buffer::Buffer() : read_index_(0), write_index_(0), data_size_(0) {
   buffer_->resize(1024);
 }
 
+Buffer::Buffer(int init_size) {
+  buffer_ = std::make_unique<std::vector<char>>();
+  buffer_->resize(init_size);
+}
+
 void Buffer::WriteData(std::string& data, int size) {
   if (size > static_cast<int>(buffer_->size()) - data_size_) {
     int original_size_index = buffer_->size();
@@ -88,5 +93,5 @@ bool Buffer::SendFd(int fd) {
 }
 
 int Buffer::GetSize() const {
-  return write_index_ - read_index_;
+  return data_size_;
 }

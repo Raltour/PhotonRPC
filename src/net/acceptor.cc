@@ -1,14 +1,14 @@
 #define MAX_LISTEN 64
 
-#include "TinyRPC/net/acceptor.h"
-#include "TinyRPC/common/console_logger.h"
-#include "TinyRPC/common/config.h"
+#include "photonrpc/net/acceptor.h"
+#include "photonrpc/common/config.h"
+#include "photonrpc/common/console_logger.h"
 
-#include <sys/socket.h>
-#include <netinet/in.h>
 #include <arpa/inet.h>
-#include <string.h>
 #include <fcntl.h>
+#include <netinet/in.h>
+#include <string.h>
+#include <sys/socket.h>
 
 Acceptor::Acceptor() {}
 
@@ -46,8 +46,8 @@ void Acceptor::StartListen() {
   listen_channel.set_handle_read([this] {
     struct sockaddr_in client_addr;
     socklen_t client_addr_len = sizeof(client_addr);
-    int connfd = accept(listenfd_, (struct sockaddr*)&client_addr,
-                        &client_addr_len);
+    int connfd =
+        accept(listenfd_, (struct sockaddr*)&client_addr, &client_addr_len);
     if (connfd < 0) {
       LOG_ERROR("accept failure");
       return;

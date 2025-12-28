@@ -4,7 +4,7 @@
 #include <string>
 
 class Codec {
-public:
+ public:
   static std::string decode(const char* data, int size);
 
   static std::string encode(std::string& data);
@@ -35,4 +35,4 @@ inline std::string Codec::encode(std::string& data) {
   }
   return size + data;
 }
-#endif //TINYRPC_CODEC_H
+#endif  //TINYRPC_CODEC_H

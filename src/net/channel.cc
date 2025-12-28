@@ -1,4 +1,4 @@
-#include "TinyRPC/net/channel.h"
+#include "photonrpc/net/channel.h"
 
 Channel::Channel(const int fd, bool read_event, bool write_event) {
   event_.data.fd = fd;

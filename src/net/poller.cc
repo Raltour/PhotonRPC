@@ -1,5 +1,5 @@
-#include "TinyRPC/net/poller.h"
-#include "TinyRPC/common/console_logger.h"
+#include "photonrpc/net/poller.h"
+#include "photonrpc/common/console_logger.h"
 
 Poller::Poller() {
   this->epoll_fd_ = epoll_create(MAX_EVENT_NUMBER);

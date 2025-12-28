@@ -4,15 +4,14 @@
 #include <string>
 
 class Config {
-public:
+ public:
   static Config& GetInstance();
 
   std::string server_host_;
   int server_port_;
 
-private:
+ private:
   Config();
 };
 
-
-#endif //TINYRPC_CONFIG_H
+#endif  //TINYRPC_CONFIG_H

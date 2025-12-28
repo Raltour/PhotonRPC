@@ -1,10 +1,10 @@
 #ifndef TINYRPC_EVENT_LOOP_H
 #define TINYRPC_EVENT_LOOP_H
 
-#include "TinyRPC/net/poller.h"
+#include "photonrpc/net/poller.h"
 
 class EventLoop {
-public:
+ public:
   EventLoop();
 
   void Loop();
@@ -13,10 +13,8 @@ public:
 
   void RemoveChannel(Channel* channel);
 
-private:
+ private:
   Poller poller_;
-
 };
 
-
-#endif //TINYRPC_EVENT_LOOP_H
+#endif  //TINYRPC_EVENT_LOOP_H

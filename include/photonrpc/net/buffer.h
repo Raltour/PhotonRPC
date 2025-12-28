@@ -5,7 +5,7 @@
 #include <vector>
 
 class Buffer {
-public:
+ public:
   Buffer();
 
   void WriteData(std::string& data, int size);
@@ -20,12 +20,10 @@ public:
 
   int GetSize();
 
-private:
+ private:
   int read_index_;
   int write_index_;
-  std::unique_ptr<std::vector<char> > buffer_;
-
+  std::unique_ptr<std::vector<char>> buffer_;
 };
 
-
-#endif //TINYRPC_BUFFER_H
+#endif  //TINYRPC_BUFFER_H

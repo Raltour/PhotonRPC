@@ -1,6 +1,6 @@
-#include "TinyRPC/rpc/rpc_channel.h"
-#include "TinyRPC/protocol/rpc_message.pb.h"
-#include "TinyRPC/net/codec.h"
+#include "photonrpc/rpc/rpc_channel.h"
+#include "photonrpc/net/codec.h"
+#include "photonrpc/protocol/rpc_message.pb.h"
 
 #include <arpa/inet.h>
 #include <assert.h>
@@ -12,7 +12,6 @@
 #include <unistd.h>
 #include <cstring>
 #include <iostream>
-
 
 void RpcChannel::CallMethod(const google::protobuf::MethodDescriptor* method,
                             google::protobuf::RpcController* controller,

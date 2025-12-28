@@ -1,10 +1,9 @@
-#include "TinyRPC/net/buffer.h"
+#include "photonrpc/net/buffer.h"
 
 #include <sys/socket.h>
 
-Buffer::Buffer()
-  : read_index_(0), write_index_(0) {
-  buffer_ = std::make_unique<std::vector<char> >();
+Buffer::Buffer() : read_index_(0), write_index_(0) {
+  buffer_ = std::make_unique<std::vector<char>>();
   // buffer_ = new std::vector<char>;
   buffer_->resize(1024);
 }
@@ -25,8 +24,7 @@ void Buffer::RetrieveData(int size) {
 }
 
 bool Buffer::ReceiveFd(int fd) {
-  int read_size = recv(fd, buffer_->data() + write_index_, buffer_->size(),
-                       0);
+  int read_size = recv(fd, buffer_->data() + write_index_, buffer_->size(), 0);
   if (read_size > 0) {
     write_index_ += read_size;
     return true;

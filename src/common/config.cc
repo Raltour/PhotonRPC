@@ -1,10 +1,9 @@
-#include "TinyRPC/common/config.h"
-#include "TinyRPC/common/console_logger.h"
+#include "photonrpc/common/config.h"
+#include "photonrpc/common/console_logger.h"
 
 #include "tinyxml2/tinyxml2.h"
 
 #include <iostream>
-
 
 Config& Config::GetInstance() {
   static Config config;

@@ -1,6 +1,6 @@
-#include "TinyRPC/rpc/rpc_server.h"
-#include "TinyRPC/common/console_logger.h"
-#include "TinyRPC/protocol/rpc_message.pb.h"
+#include "photonrpc/rpc/rpc_server.h"
+#include "photonrpc/common/console_logger.h"
+#include "photonrpc/protocol/rpc_message.pb.h"
 
 RpcServer::RpcServer()
     : tcp_server_([this](std::string& read, std::string& write) {
@@ -23,13 +23,15 @@ void RpcServer::HandleRequest(std::string& request, std::string& response) {
 
   auto service = service_map_.find(request_message.service_name())->second;
   auto service_desc = service->GetDescriptor();
-  auto method_desc = service_desc->FindMethodByName(request_message.method_name());
+  auto method_desc =
+      service_desc->FindMethodByName(request_message.method_name());
 
   auto method_request = service->GetRequestPrototype(method_desc).New();
   auto method_response = service->GetResponsePrototype(method_desc).New();
   method_request->ParseFromString(request_message.request());
 
-  service->CallMethod(method_desc, nullptr, method_request, method_response, nullptr);
+  service->CallMethod(method_desc, nullptr, method_request, method_response,
+                      nullptr);
 
   rpc::RpcMessage response_message;
   response_message.set_id(request_message.id());

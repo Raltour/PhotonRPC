@@ -1,11 +1,11 @@
 # -------- Protobuf 库 --------
 find_package(Protobuf REQUIRED)
 
-# -------- TinyRPC --------
+# -------- PhotonRPC --------
 file(GLOB_RECURSE SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cc)
 
-add_library(tinyrpc STATIC ${SOURCES})
+add_library(photonrpc STATIC ${SOURCES})
 
-target_include_directories(tinyrpc PUBLIC ${PROJECT_SOURCE_DIR}/third_party)
+target_include_directories(photonrpc PUBLIC ${PROJECT_SOURCE_DIR}/third_party)
 
-target_link_libraries(tinyrpc PRIVATE tinyxml2 protobuf::libprotobuf)
+target_link_libraries(photonrpc PRIVATE tinyxml2 protobuf::libprotobuf)

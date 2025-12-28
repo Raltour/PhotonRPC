@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(TinyRPC)
+project(PhotonRPC)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall")
@@ -14,7 +14,7 @@ add_library(tinyxml2 STATIC ${PROJECT_SOURCE_DIR}/third_party/tinyxml2/tinyxml2.
 
 target_include_directories(tinyxml2 PUBLIC ${PROJECT_SOURCE_DIR}/third_party/tinyxml2)
 
-# -------- TinyRPC --------
+# -------- PhotonRPC --------
 add_subdirectory(src)
 
 # -------- TestExample --------

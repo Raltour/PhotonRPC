@@ -1,13 +1,12 @@
-#include "TinyRPC/rpc/rpc_server.h"
-#include "TinyRPC/protocol/rpc_message.pb.h"
-#include "echo_service.pb.h"
 #include "calculate_service.pb.h"
-#include "TinyRPC/rpc/rpc_channel.h"
-#include "TinyRPC/common/console_logger.h"
+#include "echo_service.pb.h"
+#include "photonrpc/common/console_logger.h"
+#include "photonrpc/protocol/rpc_message.pb.h"
+#include "photonrpc/rpc/rpc_channel.h"
+#include "photonrpc/rpc/rpc_server.h"
 
 class CalculateServiceImpl : public rpc::CalculateService {
  public:
-
   void Add(google::protobuf::RpcController* controller,
            const rpc::AddRequest* request, rpc::AddResponse* response,
            google::protobuf::Closure* done) override {
@@ -23,7 +22,6 @@ class CalculateServiceImpl : public rpc::CalculateService {
 
 class EchoServiceImpl : public rpc::EchoService {
  public:
-
   void Echo(google::protobuf::RpcController* controller,
             const rpc::EchoRequest* request, rpc::EchoResponse* response,
             google::protobuf::Closure* done) override {

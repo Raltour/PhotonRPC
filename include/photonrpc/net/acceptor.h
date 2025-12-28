@@ -1,10 +1,10 @@
 #ifndef TINYRPC_ACCEPTOR_H
 #define TINYRPC_ACCEPTOR_H
 
-#include "TinyRPC/net/event_loop.h"
+#include "photonrpc/net/event_loop.h"
 
 class Acceptor {
-public:
+ public:
   Acceptor();
 
   void StartListen();
@@ -13,7 +13,7 @@ public:
 
   void set_start_listen_callback(std::function<void(Channel*)> callback);
 
-private:
+ private:
   int listenfd_;
   Channel listen_channel;
 
@@ -21,5 +21,4 @@ private:
   std::function<void(int)> new_connection_callback_;
 };
 
-
-#endif //TINYRPC_ACCEPTOR_H
+#endif  //TINYRPC_ACCEPTOR_H

@@ -7,7 +7,7 @@
 // 该类用于封装具体的文件描述符以及它在epoll中状态
 // 是连接上层服务与底层引擎的桥梁
 class Channel {
-public:
+ public:
   Channel(const int fd, bool read_event, bool write_event);
 
   Channel() {};
@@ -22,12 +22,11 @@ public:
 
   void HandleWrite();
 
-private:
+ private:
   epoll_event event_;
 
   std::function<void()> read_callback_;
   std::function<void()> write_callback_;
 };
 
-
-#endif //TINYRPC_CHANNEL_H
+#endif  //TINYRPC_CHANNEL_H

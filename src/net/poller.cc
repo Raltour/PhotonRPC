@@ -10,6 +10,10 @@ int Poller::poll(int timeout) {
   int ret = epoll_wait(this->epoll_fd_, this->return_events_, MAX_EVENT_NUMBER,
                        timeout);
   if (ret < 0) {
+    if (errno == EINTR) {
+      LOG_DEBUG("poll error: EINTR, continue");
+      return 0;
+    }
     LOG_ERROR("epoll failure");
     return -1;
   }

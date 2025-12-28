@@ -13,8 +13,14 @@ class EventLoop {
 
   void RemoveChannel(Channel* channel);
 
+  void WakeUp();
+
  private:
   Poller poller_;
+
+  bool stopped_;
+
+  int wakeup_fd_;
 };
 
 #endif  //PHOTONRPC_EVENT_LOOP_H

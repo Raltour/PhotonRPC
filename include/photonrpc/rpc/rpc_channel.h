@@ -1,5 +1,5 @@
-#ifndef TINYRPC_RPC_CHANNEL_H
-#define TINYRPC_RPC_CHANNEL_H
+#ifndef PHOTONRPC_RPC_CHANNEL_H
+#define PHOTONRPC_RPC_CHANNEL_H
 
 #include <google/protobuf/service.h>
 
@@ -12,4 +12,4 @@ class RpcChannel : public google::protobuf::RpcChannel {
                   google::protobuf::Closure* done) override;
 };
 
-#endif  //TINYRPC_RPC_CHANNEL_H
+#endif  //PHOTONRPC_RPC_CHANNEL_H

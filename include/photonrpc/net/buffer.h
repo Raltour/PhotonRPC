@@ -1,5 +1,5 @@
-#ifndef TINYRPC_BUFFER_H
-#define TINYRPC_BUFFER_H
+#ifndef PHOTONRPC_BUFFER_H
+#define PHOTONRPC_BUFFER_H
 
 #include <memory>
 #include <vector>
@@ -26,4 +26,4 @@ class Buffer {
   std::unique_ptr<std::vector<char>> buffer_;
 };
 
-#endif  //TINYRPC_BUFFER_H
+#endif  //PHOTONRPC_BUFFER_H

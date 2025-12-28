@@ -1,5 +1,5 @@
-#ifndef TINYRPC_TCP_SERVER_H
-#define TINYRPC_TCP_SERVER_H
+#ifndef PHOTONRPC_TCP_SERVER_H
+#define PHOTONRPC_TCP_SERVER_H
 
 #include "photonrpc/net/acceptor.h"
 #include "photonrpc/net/event_loop.h"
@@ -24,4 +24,4 @@ class TcpServer {
   std::map<int, std::unique_ptr<TcpConnection>> fd_connection_map_;
 };
 
-#endif  //TINYRPC_TCP_SERVER_H
+#endif  //PHOTONRPC_TCP_SERVER_H

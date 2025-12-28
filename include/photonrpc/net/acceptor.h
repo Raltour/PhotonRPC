@@ -1,5 +1,5 @@
-#ifndef TINYRPC_ACCEPTOR_H
-#define TINYRPC_ACCEPTOR_H
+#ifndef PHOTONRPC_ACCEPTOR_H
+#define PHOTONRPC_ACCEPTOR_H
 
 #include "photonrpc/net/event_loop.h"
 
@@ -21,4 +21,4 @@ class Acceptor {
   std::function<void(int)> new_connection_callback_;
 };
 
-#endif  //TINYRPC_ACCEPTOR_H
+#endif  //PHOTONRPC_ACCEPTOR_H

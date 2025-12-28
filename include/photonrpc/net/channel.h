@@ -1,5 +1,5 @@
-#ifndef TINYRPC_CHANNEL_H
-#define TINYRPC_CHANNEL_H
+#ifndef PHOTONRPC_CHANNEL_H
+#define PHOTONRPC_CHANNEL_H
 
 #include <sys/epoll.h>
 #include <functional>
@@ -29,4 +29,4 @@ class Channel {
   std::function<void()> write_callback_;
 };
 
-#endif  //TINYRPC_CHANNEL_H
+#endif  //PHOTONRPC_CHANNEL_H

@@ -1,5 +1,5 @@
-#ifndef TINYRPC_TCP_CONNECTION_H
-#define TINYRPC_TCP_CONNECTION_H
+#ifndef PHOTONRPC_TCP_CONNECTION_H
+#define PHOTONRPC_TCP_CONNECTION_H
 
 #include "photonrpc/net/buffer.h"
 #include "photonrpc/net/channel.h"
@@ -35,4 +35,4 @@ class TcpConnection {
   std::function<void(Channel*)> close_callback_;
 };
 
-#endif  //TINYRPC_TCP_CONNECTION_H
+#endif  //PHOTONRPC_TCP_CONNECTION_H

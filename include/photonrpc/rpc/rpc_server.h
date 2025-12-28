@@ -1,5 +1,5 @@
-#ifndef TINYRPC_RPC_SERVER_H
-#define TINYRPC_RPC_SERVER_H
+#ifndef PHOTONRPC_RPC_SERVER_H
+#define PHOTONRPC_RPC_SERVER_H
 
 #include <google/protobuf/service.h>
 
@@ -24,4 +24,4 @@ class RpcServer {
   std::map<std::string, google::protobuf::Service*> service_map_;
 };
 
-#endif  //TINYRPC_RPC_SERVER_H
+#endif  //PHOTONRPC_RPC_SERVER_H

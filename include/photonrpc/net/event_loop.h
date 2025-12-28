@@ -1,5 +1,5 @@
-#ifndef TINYRPC_EVENT_LOOP_H
-#define TINYRPC_EVENT_LOOP_H
+#ifndef PHOTONRPC_EVENT_LOOP_H
+#define PHOTONRPC_EVENT_LOOP_H
 
 #include "photonrpc/net/poller.h"
 
@@ -17,4 +17,4 @@ class EventLoop {
   Poller poller_;
 };
 
-#endif  //TINYRPC_EVENT_LOOP_H
+#endif  //PHOTONRPC_EVENT_LOOP_H

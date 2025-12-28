@@ -12,7 +12,7 @@ int main() {
 
   rpc::EchoRequest echo_request;
   rpc::EchoResponse echo_response;
-  echo_request.set_sentence("Hello, TinyRPC!");
+  echo_request.set_sentence("Hello, PhotonRPC!");
 
   int arg1 = 5;
   int arg2 = 6;

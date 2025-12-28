@@ -1,5 +1,5 @@
-#ifndef TINYRPC_CODEC_H
-#define TINYRPC_CODEC_H
+#ifndef PHOTONRPC_CODEC_H
+#define PHOTONRPC_CODEC_H
 
 #include <string>
 
@@ -35,4 +35,4 @@ inline std::string Codec::encode(std::string& data) {
   }
   return size + data;
 }
-#endif  //TINYRPC_CODEC_H
+#endif  //PHOTONRPC_CODEC_H

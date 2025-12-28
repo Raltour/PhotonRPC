@@ -1,5 +1,5 @@
-#ifndef TINYRPC_POLLER_H
-#define TINYRPC_POLLER_H
+#ifndef PHOTONRPC_POLLER_H
+#define PHOTONRPC_POLLER_H
 
 #define MAX_EVENT_NUMBER 16
 
@@ -30,4 +30,4 @@ class Poller {
   int epoll_fd_;
 };
 
-#endif  //TINYRPC_POLLER_H
+#endif  //PHOTONRPC_POLLER_H

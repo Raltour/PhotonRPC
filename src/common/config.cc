@@ -13,7 +13,7 @@ Config& Config::GetInstance() {
 Config::Config() {
   tinyxml2::XMLDocument doc;
 
-  tinyxml2::XMLError error = doc.LoadFile("../conf/tinyrpc.xml");
+  tinyxml2::XMLError error = doc.LoadFile("../conf/photonrpc.xml");
   if (error != tinyxml2::XML_SUCCESS) {
     LOG_ERROR("Error: " + std::string(doc.ErrorStr()));
     return;

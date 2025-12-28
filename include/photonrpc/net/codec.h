@@ -5,13 +5,13 @@
 
 class Codec {
  public:
-  static std::string decode(const char* data, int size);
+  static std::string decode(std::string data, int size);
 
   static std::string encode(std::string& data);
 };
 
-inline std::string Codec::decode(const char* data, int size) {
-  const int* data_size_ptr = reinterpret_cast<const int*>(data);
+inline std::string Codec::decode(std::string data, int size) {
+  const int* data_size_ptr = reinterpret_cast<const int*>(data.data());
   int data_size = data_size_ptr[0];
   if (data_size + 4 <= size) {
     std::string decoded_data;

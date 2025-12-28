@@ -4,8 +4,6 @@
 
 #include <unistd.h>
 
-#include <cstring>
-
 TcpConnection::TcpConnection(
     int connect_fd, std::function<void(std::string&, std::string&)> service,
     std::function<void(Channel*)> add_connection_callback)
@@ -33,14 +31,19 @@ void TcpConnection::HandleRead() {
   if (input_buffer_.ReceiveFd(channel_.event()->data.fd)) {
     LOG_DEBUG("TcpConnection received data");
     std::string decoded_data;
+    // TODO: Design better API of Codec and Buffer.
     while ((decoded_data = Codec::decode(input_buffer_.PeekData(),
                                          input_buffer_.GetSize()))
                .size() > 0) {
+      // TODO: Remove the magic number of 4 here.
       input_buffer_.RetrieveData(decoded_data.size() + 4);
+
       std::string response_data;
       service_(decoded_data, response_data);
+
       std::string encoded_data = Codec::encode(response_data);
       output_buffer_.WriteData(encoded_data, encoded_data.size());
+      // TODO: Improve the performance here.
       while (!output_buffer_.SendFd(channel_.event()->data.fd)) {}
       LOG_DEBUG("TcpConnection finish send data");
       decoded_data.clear();
@@ -51,6 +54,7 @@ void TcpConnection::HandleRead() {
   }
 }
 
+// TODO:: Take good use of reactor write to handle the case when the socket couldn't write right now.
 void TcpConnection::HandleWrite() {
   // send(channel_.event()->data.fd, output_buffer_.PeekData(), max_buffer_size, 0);
 }

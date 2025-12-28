@@ -10,19 +10,23 @@ class Buffer {
 
   void WriteData(std::string& data, int size);
 
-  void RetrieveData(int size);
+  std::string PeekData() const;
+
+  // Retrieve data from read_index_ to read_index + size.
+  std::string RetrieveData(int size);
 
   bool ReceiveFd(int fd);
 
+  // Send as much data as possible.
   bool SendFd(int fd);
 
-  const char* PeekData();
+  int GetSize() const;
 
-  int GetSize();
 
- private:
+private:
   int read_index_;
   int write_index_;
+  int data_size_;
   std::unique_ptr<std::vector<char>> buffer_;
 };
 

@@ -17,5 +17,16 @@ target_include_directories(tinyxml2 PUBLIC ${PROJECT_SOURCE_DIR}/third_party/tin
 # -------- PhotonRPC --------
 add_subdirectory(src)
 
+# -------- Google Test --------
+include(FetchContent)
+
+FetchContent_Declare(
+        googletest
+        URL https://github.com/google/googletest/archive/refs/tags/v1.17.0.zip
+)
+FetchContent_MakeAvailable(googletest)
+
+enable_testing()
+
 # -------- TestExample --------
 add_subdirectory(test)

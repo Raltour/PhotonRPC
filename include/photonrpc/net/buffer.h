@@ -8,6 +8,8 @@ class Buffer {
  public:
   Buffer();
 
+  Buffer(int init_size);
+
   void WriteData(std::string& data, int size);
 
   std::string PeekData() const;

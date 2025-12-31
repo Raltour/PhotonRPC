@@ -12,15 +12,11 @@ import threading
 import os
 import sys
 import signal
-from typing import Optional, Tuple
+from typing import Optional
 
-# 尝试导入protobuf，如果没有则使用手动构造
-try:
-    import google.protobuf.message as pb_message
-    PROTOBUF_AVAILABLE = True
-except ImportError:
-    PROTOBUF_AVAILABLE = False
-    print("Warning: protobuf library not available, some tests may be limited")
+import rpc_message_pb2
+import echo_service_pb2
+import calculate_service_pb2
 
 # 测试配置
 SERVER_HOST = "127.0.0.1"
@@ -49,228 +45,76 @@ class Codec:
         return encoded_data[4:4+length]
 
 
-# Protobuf消息构造（手动实现基础功能）
-class RpcMessageType:
-    RPC_TYPE_UNKNOWN = 0
-    RPC_TYPE_REQUEST = 1
-    RPC_TYPE_RESPONSE = 2
-
-
-def encode_string_field(tag: int, value: str) -> bytes:
-    """编码protobuf string字段 (wire type 2: length-delimited)"""
-    value_bytes = value.encode('utf-8')
-    # tag << 3 | wire_type(2)
-    header = struct.pack('B', (tag << 3) | 2)
-    # varint编码长度
-    length_varint = encode_varint(len(value_bytes))
-    return header + length_varint + value_bytes
-
-
-def encode_bytes_field(tag: int, value: bytes) -> bytes:
-    """编码protobuf bytes字段 (wire type 2: length-delimited)"""
-    header = struct.pack('B', (tag << 3) | 2)
-    length_varint = encode_varint(len(value))
-    return header + length_varint + value
-
-
-def encode_varint(value: int) -> bytes:
-    """编码varint整数"""
-    result = bytearray()
-    while value > 0x7F:
-        result.append((value & 0x7F) | 0x80)
-        value >>= 7
-    result.append(value & 0x7F)
-    return bytes(result)
-
-
-def encode_uint32_field(tag: int, value: int) -> bytes:
-    """编码protobuf uint32字段 (wire type 0: varint)"""
-    header = struct.pack('B', (tag << 3) | 0)
-    varint = encode_varint(value)
-    return header + varint
-
+# Protobuf消息构造（使用生成的protobuf模块）
 
 def build_rpc_message(message_id: int, message_type: int, 
                      service_name: str, method_name: str,
                      request_data: bytes = b'') -> bytes:
     """构造RpcMessage protobuf消息"""
-    parts = []
+    rpc_msg = rpc_message_pb2.RpcMessage()
+    rpc_msg.id = message_id
+    rpc_msg.type = message_type
+    rpc_msg.service_name = service_name
+    rpc_msg.method_name = method_name
     
-    # id (field 1, uint32)
-    if message_id > 0:
-        parts.append(encode_uint32_field(1, message_id))
+    if message_type == rpc_message_pb2.MessageType.RPC_TYPE_REQUEST and request_data:
+        rpc_msg.request = request_data
+    elif message_type == rpc_message_pb2.MessageType.RPC_TYPE_RESPONSE and request_data:
+        rpc_msg.response = request_data
     
-    # type (field 2, enum as uint32)
-    if message_type > 0:
-        parts.append(encode_uint32_field(2, message_type))
-    
-    # service_name (field 3, string)
-    if service_name:
-        parts.append(encode_string_field(3, service_name))
-    
-    # method_name (field 4, string)
-    if method_name:
-        parts.append(encode_string_field(4, method_name))
-    
-    # request (field 5, bytes) 或 response (field 6, bytes)
-    if message_type == RpcMessageType.RPC_TYPE_REQUEST and request_data:
-        parts.append(encode_bytes_field(5, request_data))
-    elif message_type == RpcMessageType.RPC_TYPE_RESPONSE and request_data:
-        parts.append(encode_bytes_field(6, request_data))
-    
-    return b''.join(parts)
+    return rpc_msg.SerializeToString()
 
 
-def parse_string_field(data: bytes, tag: int) -> Tuple[Optional[str], int]:
-    """解析protobuf string字段，返回(值, 消耗的字节数)"""
-    if len(data) == 0:
-        return None, 0
-    if (data[0] >> 3) != tag:
-        return None, 0
-    wire_type = data[0] & 0x7
-    if wire_type != 2:  # length-delimited
-        return None, 0
-    
-    # 解析长度
-    length, consumed = decode_varint(data[1:])
-    if length is None:
-        return None, 0
-    
-    offset = 1 + consumed
-    if len(data) < offset + length:
-        return None, 0
-    
-    value = data[offset:offset+length].decode('utf-8')
-    return value, offset + length
-
-
-def parse_bytes_field(data: bytes, tag: int) -> Tuple[Optional[bytes], int]:
-    """解析protobuf bytes字段"""
-    if len(data) == 0:
-        return None, 0
-    if (data[0] >> 3) != tag:
-        return None, 0
-    wire_type = data[0] & 0x7
-    if wire_type != 2:
-        return None, 0
-    
-    length, consumed = decode_varint(data[1:])
-    if length is None:
-        return None, 0
-    
-    offset = 1 + consumed
-    if len(data) < offset + length:
-        return None, 0
-    
-    value = data[offset:offset+length]
-    return value, offset + length
-
-
-def decode_varint(data: bytes) -> Tuple[Optional[int], int]:
-    """解码varint，返回(值, 消耗的字节数)"""
-    result = 0
-    shift = 0
-    consumed = 0
-    
-    for byte in data:
-        consumed += 1
-        result |= (byte & 0x7F) << shift
-        if not (byte & 0x80):
-            return result, consumed
-        shift += 7
-        if shift >= 64:
-            return None, consumed  # 溢出
-    
-    return None, consumed  # 不完整
-
-
-def parse_rpc_response(data: bytes) -> Tuple[Optional[bytes], int]:
+def parse_rpc_response(data: bytes) -> Optional[bytes]:
     """解析RPC响应消息，返回response字段内容"""
-    # 简化解析：直接查找field 6 (response)
-    offset = 0
-    while offset < len(data):
-        if len(data) <= offset:
-            break
-        tag_wire = data[offset]
-        tag = tag_wire >> 3
-        wire_type = tag_wire & 0x7
-        
-        if tag == 6 and wire_type == 2:  # response字段
-            length, consumed = decode_varint(data[offset+1:])
-            if length is None:
-                break
-            data_offset = offset + 1 + consumed
-            if len(data) >= data_offset + length:
-                return data[data_offset:data_offset+length], data_offset + length
-        
-        # 跳过当前字段
-        if wire_type == 0:  # varint
-            _, consumed = decode_varint(data[offset+1:])
-            offset += 1 + consumed
-        elif wire_type == 2:  # length-delimited
-            length, consumed = decode_varint(data[offset+1:])
-            if length is None:
-                break
-            offset += 1 + consumed + length
-        else:
-            break
-    
-    return None, 0
+    rpc_msg = rpc_message_pb2.RpcMessage()
+    rpc_msg.ParseFromString(data)
+    return rpc_msg.response if rpc_msg.response else None
 
 
 # Echo和Calculate服务的protobuf消息构造
 def build_echo_request(sentence: str) -> bytes:
     """构造EchoRequest: sentence (field 1, string)"""
-    return encode_string_field(1, sentence)
+    echo_req = echo_service_pb2.EchoRequest()
+    echo_req.sentence = sentence
+    return echo_req.SerializeToString()
 
 
 def parse_echo_response(data: bytes) -> Optional[str]:
     """解析EchoResponse: result (field 1, string)"""
-    result, _ = parse_string_field(data, 1)
-    return result
+    echo_resp = echo_service_pb2.EchoResponse()
+    echo_resp.ParseFromString(data)
+    return echo_resp.result
 
 
 def build_add_request(a: int, b: int) -> bytes:
     """构造AddRequest: a (field 1, int32), b (field 2, int32)"""
-    parts = []
-    parts.append(encode_uint32_field(1, a if a >= 0 else (1 << 32) + a))  # 简化为uint32
-    parts.append(encode_uint32_field(2, b if b >= 0 else (1 << 32) + b))
-    return b''.join(parts)
+    add_req = calculate_service_pb2.AddRequest()
+    add_req.a = a
+    add_req.b = b
+    return add_req.SerializeToString()
+
+
+def build_sub_request(a: int, b: int) -> bytes:
+    """构造SubRequest: a (field 1, int32), b (field 2, int32)"""
+    sub_req = calculate_service_pb2.SubRequest()
+    sub_req.a = a
+    sub_req.b = b
+    return sub_req.SerializeToString()
 
 
 def parse_add_response(data: bytes) -> Optional[int]:
     """解析AddResponse: result (field 1, int32)"""
-    # 简化：直接查找varint字段
-    offset = 0
-    while offset < len(data):
-        if len(data) <= offset:
-            break
-        tag_wire = data[offset]
-        tag = tag_wire >> 3
-        wire_type = tag_wire & 0x7
-        
-        if tag == 1 and wire_type == 0:  # result字段，varint
-            value, consumed = decode_varint(data[offset+1:])
-            if value is not None:
-                # 转换为有符号int32
-                if value & 0x80000000:
-                    value = value - (1 << 32)
-                return value
-            break
-        
-        # 跳过当前字段
-        if wire_type == 0:
-            _, consumed = decode_varint(data[offset+1:])
-            offset += 1 + consumed
-        elif wire_type == 2:
-            length, consumed = decode_varint(data[offset+1:])
-            if length is None:
-                break
-            offset += 1 + consumed + length
-        else:
-            break
-    
-    return None
+    add_resp = calculate_service_pb2.AddResponse()
+    add_resp.ParseFromString(data)
+    return add_resp.result
+
+
+def parse_sub_response(data: bytes) -> Optional[int]:
+    """解析SubResponse: result (field 1, int32)"""
+    sub_resp = calculate_service_pb2.SubResponse()
+    sub_resp.ParseFromString(data)
+    return sub_resp.result
 
 
 # RPC客户端类
@@ -304,7 +148,7 @@ class RpcClient:
             # 构造RPC消息
             rpc_message = build_rpc_message(
                 message_id, 
-                RpcMessageType.RPC_TYPE_REQUEST,
+                rpc_message_pb2.MessageType.RPC_TYPE_REQUEST,
                 service_name,
                 method_name,
                 request_data
@@ -334,7 +178,7 @@ class RpcClient:
                 message_data += chunk
             
             # 解析响应
-            response_data, _ = parse_rpc_response(message_data)
+            response_data = parse_rpc_response(message_data)
             return response_data
             
         except socket.timeout:
@@ -452,12 +296,11 @@ def test_normal_calculate_sub():
     print("\n[测试3] 正常CalculateService.Sub调用")
     client = RpcClient()
     try:
-        request_data = build_add_request(10, 3)  # 使用相同格式
-        # 注意：Sub和Add使用相同的请求格式（a, b字段）
+        request_data = build_sub_request(10, 3)
         response_data = client.call_rpc("CalculateService", "Sub", request_data)
         
         assert response_data is not None, "响应不应为空"
-        result = parse_add_response(response_data)  # 响应格式相同
+        result = parse_sub_response(response_data)
         assert result == 7, f"期望 7，得到 {result}"
         print("✓ CalculateService.Sub调用成功")
     finally:

@@ -48,7 +48,7 @@ void Acceptor::StartListen() {
     return;
   }
 
-  LOG_DEBUG("Start listen");
+  LOG_INFO("Acceptor start listening on {}:{}", ip, port);
 
   listen_channel = Channel(listenfd_, true, false);
   listen_channel.set_handle_read([this] {
@@ -61,7 +61,9 @@ void Acceptor::StartListen() {
       return;
     }
 
-    LOG_DEBUG("New connection");
+    LOG_INFO("Acceptor accepted new connection from {}:{}, fd: {}",
+             inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port),
+             connfd);
     this->new_connection_callback_(connfd);
   });
 

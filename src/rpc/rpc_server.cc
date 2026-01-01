@@ -4,7 +4,6 @@
 
 RpcServer::RpcServer()
     : tcp_server_([this](std::string& read, std::string& write) {
-        LOG_DEBUG("Reactor Service");
         this->HandleRequest(read, write);
       }) {
   // Initialize logger singleton
@@ -12,7 +11,7 @@ RpcServer::RpcServer()
 }
 
 void RpcServer::StartServer() {
-  LOG_DEBUG("Start Server");
+  LOG_INFO("RpcServer started");
   tcp_server_.RunLoop();
 }
 

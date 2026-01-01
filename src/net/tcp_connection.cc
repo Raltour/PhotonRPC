@@ -9,16 +9,9 @@ TcpConnection::TcpConnection(
     std::function<void(Channel*)> add_connection_callback)
     : service_(service) {
   channel_ = Channel(connect_fd, true, false);
-  channel_.set_handle_read([this] {
-    LOG_DEBUG("TcpConnection HandleRead called");
-    this->HandleRead();
-  });
-  channel_.set_handle_write([this] {
-    LOG_DEBUG("TcpConnection HandleWrite called");
-    this->HandleWrite();
-  });
+  channel_.set_handle_read([this] { this->HandleRead(); });
+  channel_.set_handle_write([this] { this->HandleWrite(); });
   this->add_connection_callback_ = add_connection_callback;
-  LOG_DEBUG("TcpConnection called add_connection_callback");
   add_connection_callback_(&channel_);
 }
 
@@ -29,7 +22,6 @@ void TcpConnection::set_close_callback(
 
 void TcpConnection::HandleRead() {
   if (input_buffer_.ReceiveFd(channel_.event()->data.fd)) {
-    LOG_DEBUG("TcpConnection received data");
     std::string decoded_data;
     while ((decoded_data = Codec::decode(input_buffer_.PeekData(),
                                          input_buffer_.GetSize()))
@@ -44,11 +36,10 @@ void TcpConnection::HandleRead() {
       output_buffer_.WriteData(encoded_data, encoded_data.size());
       // TODO: Improve the performance here.
       while (!output_buffer_.SendFd(channel_.event()->data.fd)) {}
-      LOG_DEBUG("TcpConnection finish send data");
       decoded_data.clear();
     }
   } else {
-    LOG_DEBUG("TcpConnection connection closed");
+    LOG_INFO("TcpConnection(fd:{}) closed", static_cast<int>(channel_.event()->data.fd));
     close(channel_.event()->data.fd);
   }
 }

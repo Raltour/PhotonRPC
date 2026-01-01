@@ -20,9 +20,7 @@ TcpServer::TcpServer(std::function<void(std::string&, std::string&)> service) {
           this->event_loop_.RemoveChannel(channel);
           this->fd_connection_map_.erase(channel->event()->data.fd);
         });
-
-    LOG_DEBUG("TcpServer: New TcpConnection with fd: " +
-              std::to_string(connect_fd));
+    LOG_INFO("TcpServer created new TcpConnection for fd: {}", connect_fd);
   });
 
   acceptor_.StartListen();

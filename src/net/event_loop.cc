@@ -20,10 +20,8 @@ EventLoop::EventLoop() : stopped_(false) {
   wakeup_fd_ = eventfd(0, EFD_NONBLOCK | EFD_CLOEXEC);
   Channel* wakeup_channel = new Channel(wakeup_fd_, true, false);
   wakeup_channel->set_handle_read([this] {
-    LOG_DEBUG("wakeup channel read");
     uint64_t one;
     int ret = read(wakeup_fd_, &one, sizeof(one));
-    LOG_DEBUG("Read from wakeup_fd_, size: " + std::to_string(ret));
     LOG_INFO("Signal: Stoping Loop");
     stopped_ = true;
   });
@@ -36,10 +34,9 @@ EventLoop::EventLoop() : stopped_(false) {
 }
 
 void EventLoop::Loop() {
-  LOG_DEBUG("Starting Loop");
+  LOG_INFO("EventLoop start looping");
   while (!stopped_) {
     int ret = poller_.poll(-1);
-    LOG_DEBUG("epoll return: " + std::to_string(ret));
     if (ret < 0) {
       break;
     }
@@ -59,7 +56,7 @@ void EventLoop::Loop() {
       }
     }
   }
-  LOG_DEBUG("EventLoop::Loop Finish");
+  LOG_INFO("EventLoop finish looping");
 }
 
 void EventLoop::AddChannel(Channel* channel) {

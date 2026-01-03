@@ -59,12 +59,13 @@ enum MessageType : int {
   RPC_TYPE_UNKNOW = 0,
   RPC_TYPE_REQUEST = 1,
   RPC_TYPE_RESPONSE = 2,
+  RPC_TYPE_ERROR = 3,
   MessageType_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
   MessageType_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
 };
 bool MessageType_IsValid(int value);
 constexpr MessageType MessageType_MIN = RPC_TYPE_UNKNOW;
-constexpr MessageType MessageType_MAX = RPC_TYPE_RESPONSE;
+constexpr MessageType MessageType_MAX = RPC_TYPE_ERROR;
 constexpr int MessageType_ARRAYSIZE = MessageType_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* MessageType_descriptor();

@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x11rpc_message.proto\x12\x03rpc\"\x86\x01\n\nRpcMessage\x12\n\n\x02id\x18\x01 \x01(\r\x12\x1e\n\x04type\x18\x02 \x01(\x0e\x32\x10.rpc.MessageType\x12\x14\n\x0cservice_name\x18\x03 \x01(\t\x12\x13\n\x0bmethod_name\x18\x04 \x01(\t\x12\x0f\n\x07request\x18\x05 \x01(\x0c\x12\x10\n\x08response\x18\x06 \x01(\x0c*O\n\x0bMessageType\x12\x13\n\x0fRPC_TYPE_UNKNOW\x10\x00\x12\x14\n\x10RPC_TYPE_REQUEST\x10\x01\x12\x15\n\x11RPC_TYPE_RESPONSE\x10\x02\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x11rpc_message.proto\x12\x03rpc\"\x86\x01\n\nRpcMessage\x12\n\n\x02id\x18\x01 \x01(\r\x12\x1e\n\x04type\x18\x02 \x01(\x0e\x32\x10.rpc.MessageType\x12\x14\n\x0cservice_name\x18\x03 \x01(\t\x12\x13\n\x0bmethod_name\x18\x04 \x01(\t\x12\x0f\n\x07request\x18\x05 \x01(\x0c\x12\x10\n\x08response\x18\x06 \x01(\x0c*c\n\x0bMessageType\x12\x13\n\x0fRPC_TYPE_UNKNOW\x10\x00\x12\x14\n\x10RPC_TYPE_REQUEST\x10\x01\x12\x15\n\x11RPC_TYPE_RESPONSE\x10\x02\x12\x12\n\x0eRPC_TYPE_ERROR\x10\x03\x62\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'rpc_message_pb2', globals())
@@ -21,7 +21,7 @@ if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
   _MESSAGETYPE._serialized_start=163
-  _MESSAGETYPE._serialized_end=242
+  _MESSAGETYPE._serialized_end=262
   _RPCMESSAGE._serialized_start=27
   _RPCMESSAGE._serialized_end=161
 # @@protoc_insertion_point(module_scope)

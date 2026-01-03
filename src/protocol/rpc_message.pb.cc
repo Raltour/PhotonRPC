@@ -71,13 +71,13 @@ const char descriptor_table_protodef_rpc_5fmessage_2eproto[] PROTOBUF_SECTION_VA
   "\n\n\002id\030\001 \001(\r\022\036\n\004type\030\002 \001(\0162\020.rpc.MessageT"
   "ype\022\024\n\014service_name\030\003 \001(\t\022\023\n\013method_name"
   "\030\004 \001(\t\022\017\n\007request\030\005 \001(\014\022\020\n\010response\030\006 \001("
-  "\014*O\n\013MessageType\022\023\n\017RPC_TYPE_UNKNOW\020\000\022\024\n"
+  "\014*c\n\013MessageType\022\023\n\017RPC_TYPE_UNKNOW\020\000\022\024\n"
   "\020RPC_TYPE_REQUEST\020\001\022\025\n\021RPC_TYPE_RESPONSE"
-  "\020\002b\006proto3"
+  "\020\002\022\022\n\016RPC_TYPE_ERROR\020\003b\006proto3"
   ;
 static ::_pbi::once_flag descriptor_table_rpc_5fmessage_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_rpc_5fmessage_2eproto = {
-    false, false, 250, descriptor_table_protodef_rpc_5fmessage_2eproto,
+    false, false, 270, descriptor_table_protodef_rpc_5fmessage_2eproto,
     "rpc_message.proto",
     &descriptor_table_rpc_5fmessage_2eproto_once, nullptr, 0, 1,
     schemas, file_default_instances, TableStruct_rpc_5fmessage_2eproto::offsets,
@@ -100,6 +100,7 @@ bool MessageType_IsValid(int value) {
     case 0:
     case 1:
     case 2:
+    case 3:
       return true;
     default:
       return false;

@@ -21,6 +21,8 @@ class RpcServer {
 
   void HandleRequest(std::string& request, std::string& response);
 
+  bool CheckRequest(rpc::RpcMessage request);
+
   std::map<std::string, google::protobuf::Service*> service_map_;
 };
 

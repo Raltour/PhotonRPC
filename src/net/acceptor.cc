@@ -13,8 +13,8 @@
 Acceptor::Acceptor() {}
 
 void Acceptor::StartListen() {
-  const char* ip = Config::GetInstance().server_host_.c_str();
-  int port = Config::GetInstance().server_port_;
+  const char* ip = Config::GetInstance().server_host().c_str();
+  int port = Config::GetInstance().server_port();
 
   struct sockaddr_in address;
   bzero(&address, sizeof(address));

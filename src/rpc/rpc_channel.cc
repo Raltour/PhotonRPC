@@ -1,6 +1,7 @@
 #include "photonrpc/rpc/rpc_channel.h"
 #include "photonrpc/net/codec.h"
 #include "photonrpc/protocol/rpc_message.pb.h"
+#include "photonrpc/common/config.h"
 
 #include <arpa/inet.h>
 #include <assert.h>
@@ -18,8 +19,8 @@ void RpcChannel::CallMethod(const google::protobuf::MethodDescriptor* method,
                             const google::protobuf::Message* request,
                             google::protobuf::Message* response,
                             google::protobuf::Closure* done) {
-  const char* ip = "127.0.0.1";
-  int port = 12345;
+  const char* ip = Config::GetInstance().server_host().c_str();
+  int port = Config::GetInstance().server_port();
 
   struct sockaddr_in server_address;
   bzero(&server_address, sizeof(server_address));

@@ -20,15 +20,15 @@ class Logger {
 
   static void Init();
 
-  // 设置日志级别
-  static void SetLogLevel(spdlog::level::level_enum level) {
-    spdlog::set_level(level);
-  }
-
-  // 获取底层spdlog logger
-  static std::shared_ptr<spdlog::logger> GetLogger() {
-    return spdlog::default_logger();
-  }
+  // // 设置日志级别
+  // static void SetLogLevel(spdlog::level::level_enum level) {
+  //   spdlog::set_level(level);
+  // }
+  //
+  // // 获取底层spdlog logger
+  // static std::shared_ptr<spdlog::logger> GetLogger() {
+  //   return spdlog::default_logger();
+  // }
 
  private:
   // Logger();

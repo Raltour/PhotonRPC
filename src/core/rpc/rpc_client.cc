@@ -1,5 +1,6 @@
 #include "rpc_client.h"
 #include "common/config.h"
+#include "common/logger.h"
 
 #include <arpa/inet.h>
 #include <assert.h>
@@ -38,7 +39,8 @@ void RpcClient::ConnectToServer() {
 
   if (connect(sockfd_, (struct sockaddr*)&server_address,
               sizeof(server_address)) < 0) {
-    printf("ConnectToServer error!\n");
+    // printf("ConnectToServer error!\n");
+    spdlog::error("Connec To Server error!");
     close(sockfd_);
     sockfd_ = -1;
   }
@@ -46,7 +48,8 @@ void RpcClient::ConnectToServer() {
 
 void RpcClient::SendMessage(const std::string& message) {
   if (send(sockfd_, message.c_str(), message.size(), 0) <= 0) {
-    printf("SendMessage error!\n");
+    // printf("SendMessage error!\n");
+    spdlog::error("Send Message error!");
   }
 }
 

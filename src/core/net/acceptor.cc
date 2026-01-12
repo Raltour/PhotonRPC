@@ -26,7 +26,7 @@ void Acceptor::StartListen() {
 
   this->listenfd_ = socket(PF_INET, SOCK_STREAM, 0);
   if (listenfd_ < 0) {
-    // LOG_ERROR("create listen_fd failure");
+    spdlog::error("create listen_fd failure");
     return;
   }
 
@@ -34,19 +34,19 @@ void Acceptor::StartListen() {
   // In some case, the socket haven't been released by the Linux OS, but the server run again.
   int opt = 1;
   if (setsockopt(listenfd_, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0) {
-    // LOG_ERROR("setsockopt failure");
+    spdlog::error("setsockopt failure");
   }
 
   int ret = bind(listenfd_, (struct sockaddr*)&address, sizeof(address));
   if (ret < 0) {
-    // LOG_ERROR("bind listen_fd failure, errno = " +
-    //           std::string(strerror(errno)));
+    spdlog::error("bind listen_fd failure");
     exit(1);
   }
 
   ret = listen(listenfd_, MAX_LISTEN);
   if (ret < 0) {
     // LOG_ERROR("listen failure");
+    spdlog::error("listen failure");
     return;
   }
 

@@ -19,7 +19,18 @@ std::barrier start_barrier(NUM_OF_THREADS + 1, []() {
   start_time = std::chrono::steady_clock::now();
 });
 
+std::chrono::steady_clock::time_point end_time;
+std::barrier end_barrier(NUM_OF_THREADS + 1, []() {
+  end_time = std::chrono::steady_clock::now();
+});
+
+
 std::atomic<int> request_count(0);
+
+std::mutex latency_mutex;
+std::vector<uint32_t> latency;
+
+
 
 void thread_func() {
   std::vector<std::unique_ptr<RpcChannel>> channels;
@@ -39,16 +50,36 @@ void thread_func() {
 
   int local_count = 0;
 
+  std::vector<uint32_t> local_latency;
+
   start_barrier.arrive_and_wait();
 
   for (int i = 0; i < NUM_OF_REQUESTS_PER_CLIENT; i++) {
     for (auto& stub : calculate_service_stubs) {
+      auto t0 = std::chrono::steady_clock::now();
       stub->Add(nullptr, &add_request, &add_response, nullptr);
-      ++request_count;
+      // int result = arg1 + arg2;
+      auto t1 = std::chrono::steady_clock::now();
+      local_latency.push_back(static_cast<uint32_t>(std::chrono::duration_cast<std::chrono::microseconds>(t1 - t0).count()));
+      ++local_count;
     }
   }
 
+  end_barrier.arrive_and_wait();
+
   request_count += local_count;
+  std::lock_guard<std::mutex> lock(latency_mutex);
+  latency.insert(latency.end(), local_latency.begin(), local_latency.end());
+}
+
+static uint32_t percentile_us(std::vector<uint32_t>& v, double p) {
+  // p: 0~100
+  if (v.empty()) return 0;
+  std::sort(v.begin(), v.end());
+  double rank = (p / 100.0) * (v.size() - 1);
+  size_t idx = (size_t)(rank + 0.5); // 四舍五入
+  if (idx >= v.size()) idx = v.size() - 1;
+  return v[idx];
 }
 
 int main() {
@@ -60,19 +91,27 @@ int main() {
 
   start_barrier.arrive_and_wait();
 
+  end_barrier.arrive_and_wait();
+
   for (int i = 0; i < NUM_OF_THREADS; ++i) {
     threads[i].join();
   }
 
-  auto end_time = std::chrono::steady_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(
       end_time - start_time);
-
   double qps = (request_count * 1000.0) / duration.count();
+
+  std::cout << "Totle latency count: " << latency.size() << std::endl;
+  uint32_t p50 = percentile_us(latency, 50);
+  uint32_t p95 = percentile_us(latency, 95);
+  uint32_t p99 = percentile_us(latency, 99);
 
   std::cout << "Total requests: " << request_count << std::endl;
   std::cout << "Total time: " << duration.count() << " ms" << std::endl;
   std::cout << "QPS: " << qps << std::endl;
+  std::cout << "P50: " << p50 << " us" << std::endl;
+  std::cout << "P95: " << p95 << " us" << std::endl;
+  std::cout << "P99: " << p99 << " us" << std::endl;
 
   return 0;
 }

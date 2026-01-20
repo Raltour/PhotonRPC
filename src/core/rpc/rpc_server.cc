@@ -14,8 +14,6 @@ RpcServer::RpcServer() {
 }
 
 void RpcServer::StartServer() {
-  // LOG_INFO("RpcServer started");
-  spdlog::info("RpcServer started");
   tcp_server_.RunLoop();
 }
 

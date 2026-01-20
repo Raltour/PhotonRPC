@@ -1,9 +1,9 @@
 #include "poller.h"
 
-#include <iostream>
-#include <cstdio>
-#include <cerrno>
 #include <unistd.h>
+#include <cerrno>
+#include <cstdio>
+#include <iostream>
 
 #include "../common/logger.h"
 
@@ -21,8 +21,8 @@ Poller::~Poller() {
 }
 
 int Poller::poll(int timeout) {
-  int ret = epoll_wait(this->epoll_fd_, this->return_events_.data(), MAX_EVENT_NUMBER,
-                       timeout);
+  int ret = epoll_wait(this->epoll_fd_, this->return_events_.data(),
+                       MAX_EVENT_NUMBER, timeout);
   // int ret = epoll_wait(this->epoll_fd_, this->return_events_.data(), MAX_EVENT_NUMBER,
   //                      timeout);
 
@@ -41,7 +41,7 @@ void Poller::RegisterChannel(Channel* channel) {
   int fd = channel->fd();
 
   if (epoll_ctl(this->epoll_fd_, EPOLL_CTL_ADD, channel->fd(),
-            channel->event()) == -1) {
+                channel->event()) == -1) {
     perror("epoll_ctl add channel failed");
   }
 
@@ -52,8 +52,7 @@ void Poller::RemoveChannel(Channel* channel) {
   int fd = channel->fd();
   this->fd_channel_map_.erase(fd);
 
-  epoll_ctl(this->epoll_fd_, EPOLL_CTL_DEL, channel->fd(),
-            channel->event());
+  epoll_ctl(this->epoll_fd_, EPOLL_CTL_DEL, channel->fd(), channel->event());
 }
 
 // std::vector<epoll_event>& Poller::get_return_events() {

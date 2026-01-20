@@ -6,9 +6,9 @@
 #include <sys/epoll.h>
 #include "channel.h"
 
+#include <array>
 #include <map>
 #include <vector>
-#include <array>
 
 class Poller {
  public:

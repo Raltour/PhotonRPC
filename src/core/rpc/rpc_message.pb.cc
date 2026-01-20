@@ -5,13 +5,13 @@
 
 #include <algorithm>
 
-#include <google/protobuf/io/coded_stream.h>
-#include <google/protobuf/extension_set.h>
-#include <google/protobuf/wire_format_lite.h>
 #include <google/protobuf/descriptor.h>
+#include <google/protobuf/extension_set.h>
 #include <google/protobuf/generated_message_reflection.h>
+#include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/reflection_ops.h>
 #include <google/protobuf/wire_format.h>
+#include <google/protobuf/wire_format_lite.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
 
@@ -21,15 +21,20 @@ namespace _pb = ::PROTOBUF_NAMESPACE_ID;
 namespace _pbi = _pb::internal;
 
 namespace rpc {
-PROTOBUF_CONSTEXPR RpcMessage::RpcMessage(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.service_name_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.method_name_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.request_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.response_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.id_)*/0u
-  , /*decltype(_impl_.type_)*/0
-  , /*decltype(_impl_._cached_size_)*/{}} {}
+PROTOBUF_CONSTEXPR RpcMessage::RpcMessage(::_pbi::ConstantInitialized)
+    : _impl_{
+          /*decltype(_impl_.service_name_)*/ {
+              &::_pbi::fixed_address_empty_string,
+              ::_pbi::ConstantInitialized{}},
+          /*decltype(_impl_.method_name_)*/
+          {&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}},
+          /*decltype(_impl_.request_)*/
+          {&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}},
+          /*decltype(_impl_.response_)*/
+          {&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}},
+          /*decltype(_impl_.id_)*/ 0u,
+          /*decltype(_impl_.type_)*/ 0,
+          /*decltype(_impl_._cached_size_)*/ {}} {}
 struct RpcMessageDefaultTypeInternal {
   PROTOBUF_CONSTEXPR RpcMessageDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
@@ -38,61 +43,84 @@ struct RpcMessageDefaultTypeInternal {
     RpcMessage _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RpcMessageDefaultTypeInternal _RpcMessage_default_instance_;
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RpcMessageDefaultTypeInternal
+        _RpcMessage_default_instance_;
 }  // namespace rpc
 static ::_pb::Metadata file_level_metadata_rpc_5fmessage_2eproto[1];
-static const ::_pb::EnumDescriptor* file_level_enum_descriptors_rpc_5fmessage_2eproto[1];
-static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_rpc_5fmessage_2eproto = nullptr;
+static const ::_pb::EnumDescriptor*
+    file_level_enum_descriptors_rpc_5fmessage_2eproto[1];
+static constexpr ::_pb::ServiceDescriptor const**
+    file_level_service_descriptors_rpc_5fmessage_2eproto = nullptr;
 
-const uint32_t TableStruct_rpc_5fmessage_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::rpc::RpcMessage, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::rpc::RpcMessage, _impl_.id_),
-  PROTOBUF_FIELD_OFFSET(::rpc::RpcMessage, _impl_.type_),
-  PROTOBUF_FIELD_OFFSET(::rpc::RpcMessage, _impl_.service_name_),
-  PROTOBUF_FIELD_OFFSET(::rpc::RpcMessage, _impl_.method_name_),
-  PROTOBUF_FIELD_OFFSET(::rpc::RpcMessage, _impl_.request_),
-  PROTOBUF_FIELD_OFFSET(::rpc::RpcMessage, _impl_.response_),
+const uint32_t
+    TableStruct_rpc_5fmessage_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
+        protodesc_cold) = {
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::rpc::RpcMessage, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        PROTOBUF_FIELD_OFFSET(::rpc::RpcMessage, _impl_.id_),
+        PROTOBUF_FIELD_OFFSET(::rpc::RpcMessage, _impl_.type_),
+        PROTOBUF_FIELD_OFFSET(::rpc::RpcMessage, _impl_.service_name_),
+        PROTOBUF_FIELD_OFFSET(::rpc::RpcMessage, _impl_.method_name_),
+        PROTOBUF_FIELD_OFFSET(::rpc::RpcMessage, _impl_.request_),
+        PROTOBUF_FIELD_OFFSET(::rpc::RpcMessage, _impl_.response_),
 };
-static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, -1, sizeof(::rpc::RpcMessage)},
+static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(
+    protodesc_cold) = {
+    {0, -1, -1, sizeof(::rpc::RpcMessage)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
-  &::rpc::_RpcMessage_default_instance_._instance,
+    &::rpc::_RpcMessage_default_instance_._instance,
 };
 
-const char descriptor_table_protodef_rpc_5fmessage_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\021rpc_message.proto\022\003rpc\"\206\001\n\nRpcMessage\022"
-  "\n\n\002id\030\001 \001(\r\022\036\n\004type\030\002 \001(\0162\020.rpc.MessageT"
-  "ype\022\024\n\014service_name\030\003 \001(\t\022\023\n\013method_name"
-  "\030\004 \001(\t\022\017\n\007request\030\005 \001(\014\022\020\n\010response\030\006 \001("
-  "\014*c\n\013MessageType\022\023\n\017RPC_TYPE_UNKNOW\020\000\022\024\n"
-  "\020RPC_TYPE_REQUEST\020\001\022\025\n\021RPC_TYPE_RESPONSE"
-  "\020\002\022\022\n\016RPC_TYPE_ERROR\020\003b\006proto3"
-  ;
+const char
+    descriptor_table_protodef_rpc_5fmessage_2eproto[] PROTOBUF_SECTION_VARIABLE(
+        protodesc_cold) =
+        "\n\021rpc_message.proto\022\003rpc\"\206\001\n\nRpcMessage\022"
+        "\n\n\002id\030\001 \001(\r\022\036\n\004type\030\002 "
+        "\001(\0162\020.rpc.MessageT"
+        "ype\022\024\n\014service_name\030\003 \001(\t\022\023\n\013method_name"
+        "\030\004 \001(\t\022\017\n\007request\030\005 "
+        "\001(\014\022\020\n\010response\030\006 \001("
+        "\014*c\n\013MessageType\022\023\n\017RPC_TYPE_UNKNOW\020\000\022\024\n"
+        "\020RPC_TYPE_REQUEST\020\001\022\025\n\021RPC_TYPE_RESPONSE"
+        "\020\002\022\022\n\016RPC_TYPE_ERROR\020\003b\006proto3";
 static ::_pbi::once_flag descriptor_table_rpc_5fmessage_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_rpc_5fmessage_2eproto = {
-    false, false, 270, descriptor_table_protodef_rpc_5fmessage_2eproto,
+    false,
+    false,
+    270,
+    descriptor_table_protodef_rpc_5fmessage_2eproto,
     "rpc_message.proto",
-    &descriptor_table_rpc_5fmessage_2eproto_once, nullptr, 0, 1,
-    schemas, file_default_instances, TableStruct_rpc_5fmessage_2eproto::offsets,
-    file_level_metadata_rpc_5fmessage_2eproto, file_level_enum_descriptors_rpc_5fmessage_2eproto,
+    &descriptor_table_rpc_5fmessage_2eproto_once,
+    nullptr,
+    0,
+    1,
+    schemas,
+    file_default_instances,
+    TableStruct_rpc_5fmessage_2eproto::offsets,
+    file_level_metadata_rpc_5fmessage_2eproto,
+    file_level_enum_descriptors_rpc_5fmessage_2eproto,
     file_level_service_descriptors_rpc_5fmessage_2eproto,
 };
-PROTOBUF_ATTRIBUTE_WEAK const ::_pbi::DescriptorTable* descriptor_table_rpc_5fmessage_2eproto_getter() {
+PROTOBUF_ATTRIBUTE_WEAK const ::_pbi::DescriptorTable*
+descriptor_table_rpc_5fmessage_2eproto_getter() {
   return &descriptor_table_rpc_5fmessage_2eproto;
 }
 
 // Force running AddDescriptors() at dynamic initialization time.
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_rpc_5fmessage_2eproto(&descriptor_table_rpc_5fmessage_2eproto);
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::_pbi::AddDescriptorsRunner
+    dynamic_init_dummy_rpc_5fmessage_2eproto(
+        &descriptor_table_rpc_5fmessage_2eproto);
 namespace rpc {
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* MessageType_descriptor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_rpc_5fmessage_2eproto);
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(
+      &descriptor_table_rpc_5fmessage_2eproto);
   return file_level_enum_descriptors_rpc_5fmessage_2eproto[0];
 }
 bool MessageType_IsValid(int value) {
@@ -107,7 +135,6 @@ bool MessageType_IsValid(int value) {
   }
 }
 
-
 // ===================================================================
 
 class RpcMessage::_Internal {
@@ -115,97 +142,98 @@ class RpcMessage::_Internal {
 };
 
 RpcMessage::RpcMessage(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+                       bool is_message_owned)
+    : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
   SharedCtor(arena, is_message_owned);
   // @@protoc_insertion_point(arena_constructor:rpc.RpcMessage)
 }
 RpcMessage::RpcMessage(const RpcMessage& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  RpcMessage* const _this = this; (void)_this;
-  new (&_impl_) Impl_{
-      decltype(_impl_.service_name_){}
-    , decltype(_impl_.method_name_){}
-    , decltype(_impl_.request_){}
-    , decltype(_impl_.response_){}
-    , decltype(_impl_.id_){}
-    , decltype(_impl_.type_){}
-    , /*decltype(_impl_._cached_size_)*/{}};
+    : ::PROTOBUF_NAMESPACE_ID::Message() {
+  RpcMessage* const _this = this;
+  (void)_this;
+  new (&_impl_) Impl_{decltype(_impl_.service_name_){},
+                      decltype(_impl_.method_name_){},
+                      decltype(_impl_.request_){},
+                      decltype(_impl_.response_){},
+                      decltype(_impl_.id_){},
+                      decltype(_impl_.type_){},
+                      /*decltype(_impl_._cached_size_)*/ {}};
 
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
+      from._internal_metadata_);
   _impl_.service_name_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.service_name_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.service_name_.Set("", GetArenaForAllocation());
+#endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_service_name().empty()) {
-    _this->_impl_.service_name_.Set(from._internal_service_name(), 
-      _this->GetArenaForAllocation());
+    _this->_impl_.service_name_.Set(from._internal_service_name(),
+                                    _this->GetArenaForAllocation());
   }
   _impl_.method_name_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.method_name_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.method_name_.Set("", GetArenaForAllocation());
+#endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_method_name().empty()) {
-    _this->_impl_.method_name_.Set(from._internal_method_name(), 
-      _this->GetArenaForAllocation());
+    _this->_impl_.method_name_.Set(from._internal_method_name(),
+                                   _this->GetArenaForAllocation());
   }
   _impl_.request_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.request_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.request_.Set("", GetArenaForAllocation());
+#endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_request().empty()) {
-    _this->_impl_.request_.Set(from._internal_request(), 
-      _this->GetArenaForAllocation());
+    _this->_impl_.request_.Set(from._internal_request(),
+                               _this->GetArenaForAllocation());
   }
   _impl_.response_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.response_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.response_.Set("", GetArenaForAllocation());
+#endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_response().empty()) {
-    _this->_impl_.response_.Set(from._internal_response(), 
-      _this->GetArenaForAllocation());
+    _this->_impl_.response_.Set(from._internal_response(),
+                                _this->GetArenaForAllocation());
   }
   ::memcpy(&_impl_.id_, &from._impl_.id_,
-    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.type_) -
-    reinterpret_cast<char*>(&_impl_.id_)) + sizeof(_impl_.type_));
+           static_cast<size_t>(reinterpret_cast<char*>(&_impl_.type_) -
+                               reinterpret_cast<char*>(&_impl_.id_)) +
+               sizeof(_impl_.type_));
   // @@protoc_insertion_point(copy_constructor:rpc.RpcMessage)
 }
 
-inline void RpcMessage::SharedCtor(
-    ::_pb::Arena* arena, bool is_message_owned) {
+inline void RpcMessage::SharedCtor(::_pb::Arena* arena, bool is_message_owned) {
   (void)arena;
   (void)is_message_owned;
-  new (&_impl_) Impl_{
-      decltype(_impl_.service_name_){}
-    , decltype(_impl_.method_name_){}
-    , decltype(_impl_.request_){}
-    , decltype(_impl_.response_){}
-    , decltype(_impl_.id_){0u}
-    , decltype(_impl_.type_){0}
-    , /*decltype(_impl_._cached_size_)*/{}
-  };
+  new (&_impl_) Impl_{decltype(_impl_.service_name_){},
+                      decltype(_impl_.method_name_){},
+                      decltype(_impl_.request_){},
+                      decltype(_impl_.response_){},
+                      decltype(_impl_.id_){0u},
+                      decltype(_impl_.type_){0},
+                      /*decltype(_impl_._cached_size_)*/ {}};
   _impl_.service_name_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.service_name_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.service_name_.Set("", GetArenaForAllocation());
+#endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   _impl_.method_name_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.method_name_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.method_name_.Set("", GetArenaForAllocation());
+#endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   _impl_.request_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.request_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.request_.Set("", GetArenaForAllocation());
+#endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   _impl_.response_.InitDefault();
-  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.response_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.response_.Set("", GetArenaForAllocation());
+#endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 RpcMessage::~RpcMessage() {
   // @@protoc_insertion_point(destructor:rpc.RpcMessage)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
+  if (auto* arena =
+          _internal_metadata_
+              .DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+    (void)arena;
     return;
   }
   SharedDtor();
@@ -224,23 +252,27 @@ void RpcMessage::SetCachedSize(int size) const {
 }
 
 void RpcMessage::Clear() {
-// @@protoc_insertion_point(message_clear_start:rpc.RpcMessage)
+  // @@protoc_insertion_point(message_clear_start:rpc.RpcMessage)
   uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   _impl_.service_name_.ClearToEmpty();
   _impl_.method_name_.ClearToEmpty();
   _impl_.request_.ClearToEmpty();
   _impl_.response_.ClearToEmpty();
-  ::memset(&_impl_.id_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&_impl_.type_) -
-      reinterpret_cast<char*>(&_impl_.id_)) + sizeof(_impl_.type_));
+  ::memset(&_impl_.id_, 0,
+           static_cast<size_t>(reinterpret_cast<char*>(&_impl_.type_) -
+                               reinterpret_cast<char*>(&_impl_.id_)) +
+               sizeof(_impl_.type_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
-const char* RpcMessage::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+const char* RpcMessage::_InternalParse(const char* ptr,
+                                       ::_pbi::ParseContext* ctx) {
+#define CHK_(x)                     \
+  if (PROTOBUF_PREDICT_FALSE(!(x))) \
+  goto failure
   while (!ctx->Done(&ptr)) {
     uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
@@ -311,7 +343,8 @@ const char* RpcMessage::_InternalParse(const char* ptr, ::_pbi::ParseContext* ct
     }
     ptr = UnknownFieldParse(
         tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        _internal_metadata_
+            .mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
         ptr, ctx);
     CHK_(ptr != nullptr);
   }  // while
@@ -324,109 +357,116 @@ failure:
 }
 
 uint8_t* RpcMessage::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+    uint8_t* target,
+    ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:rpc.RpcMessage)
   uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // uint32 id = 1;
   if (this->_internal_id() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(1, this->_internal_id(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(1, this->_internal_id(),
+                                                        target);
   }
 
   // .rpc.MessageType type = 2;
   if (this->_internal_type() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteEnumToArray(
-      2, this->_internal_type(), target);
+    target = ::_pbi::WireFormatLite::WriteEnumToArray(2, this->_internal_type(),
+                                                      target);
   }
 
   // string service_name = 3;
   if (!this->_internal_service_name().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_service_name().data(), static_cast<int>(this->_internal_service_name().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "rpc.RpcMessage.service_name");
-    target = stream->WriteStringMaybeAliased(
-        3, this->_internal_service_name(), target);
+        this->_internal_service_name().data(),
+        static_cast<int>(this->_internal_service_name().length()),
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+        "rpc.RpcMessage.service_name");
+    target = stream->WriteStringMaybeAliased(3, this->_internal_service_name(),
+                                             target);
   }
 
   // string method_name = 4;
   if (!this->_internal_method_name().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_method_name().data(), static_cast<int>(this->_internal_method_name().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "rpc.RpcMessage.method_name");
-    target = stream->WriteStringMaybeAliased(
-        4, this->_internal_method_name(), target);
+        this->_internal_method_name().data(),
+        static_cast<int>(this->_internal_method_name().length()),
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+        "rpc.RpcMessage.method_name");
+    target = stream->WriteStringMaybeAliased(4, this->_internal_method_name(),
+                                             target);
   }
 
   // bytes request = 5;
   if (!this->_internal_request().empty()) {
-    target = stream->WriteBytesMaybeAliased(
-        5, this->_internal_request(), target);
+    target =
+        stream->WriteBytesMaybeAliased(5, this->_internal_request(), target);
   }
 
   // bytes response = 6;
   if (!this->_internal_response().empty()) {
-    target = stream->WriteBytesMaybeAliased(
-        6, this->_internal_response(), target);
+    target =
+        stream->WriteBytesMaybeAliased(6, this->_internal_response(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+        _internal_metadata_
+            .unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
+                ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance),
+        target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:rpc.RpcMessage)
   return target;
 }
 
 size_t RpcMessage::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:rpc.RpcMessage)
+  // @@protoc_insertion_point(message_byte_size_start:rpc.RpcMessage)
   size_t total_size = 0;
 
   uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   // string service_name = 3;
   if (!this->_internal_service_name().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_service_name());
+    total_size +=
+        1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+                this->_internal_service_name());
   }
 
   // string method_name = 4;
   if (!this->_internal_method_name().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_method_name());
+    total_size +=
+        1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+                this->_internal_method_name());
   }
 
   // bytes request = 5;
   if (!this->_internal_request().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
-        this->_internal_request());
+    total_size +=
+        1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
+                this->_internal_request());
   }
 
   // bytes response = 6;
   if (!this->_internal_response().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
-        this->_internal_response());
+    total_size +=
+        1 + ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
+                this->_internal_response());
   }
 
   // uint32 id = 1;
   if (this->_internal_id() != 0) {
-    total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_id());
+    total_size +=
+        ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_id());
   }
 
   // .rpc.MessageType type = 2;
   if (this->_internal_type() != 0) {
-    total_size += 1 +
-      ::_pbi::WireFormatLite::EnumSize(this->_internal_type());
+    total_size += 1 + ::_pbi::WireFormatLite::EnumSize(this->_internal_type());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
@@ -434,18 +474,20 @@ size_t RpcMessage::ByteSizeLong() const {
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData RpcMessage::_class_data_ = {
     ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
-    RpcMessage::MergeImpl
-};
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*RpcMessage::GetClassData() const { return &_class_data_; }
+    RpcMessage::MergeImpl};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData* RpcMessage::GetClassData()
+    const {
+  return &_class_data_;
+}
 
-
-void RpcMessage::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void RpcMessage::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg,
+                           const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
   auto* const _this = static_cast<RpcMessage*>(&to_msg);
   auto& from = static_cast<const RpcMessage&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:rpc.RpcMessage)
   GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  (void)cached_has_bits;
 
   if (!from._internal_service_name().empty()) {
     _this->_internal_set_service_name(from._internal_service_name());
@@ -465,12 +507,15 @@ void RpcMessage::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PRO
   if (from._internal_type() != 0) {
     _this->_internal_set_type(from._internal_type());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_
+      .MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(
+          from._internal_metadata_);
 }
 
 void RpcMessage::CopyFrom(const RpcMessage& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:rpc.RpcMessage)
-  if (&from == this) return;
+  // @@protoc_insertion_point(class_specific_copy_from_start:rpc.RpcMessage)
+  if (&from == this)
+    return;
   Clear();
   MergeFrom(from);
 }
@@ -485,41 +530,36 @@ void RpcMessage::InternalSwap(RpcMessage* other) {
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.service_name_, lhs_arena,
-      &other->_impl_.service_name_, rhs_arena
-  );
+      &_impl_.service_name_, lhs_arena, &other->_impl_.service_name_,
+      rhs_arena);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.method_name_, lhs_arena,
-      &other->_impl_.method_name_, rhs_arena
-  );
+      &_impl_.method_name_, lhs_arena, &other->_impl_.method_name_, rhs_arena);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.request_, lhs_arena,
-      &other->_impl_.request_, rhs_arena
-  );
+      &_impl_.request_, lhs_arena, &other->_impl_.request_, rhs_arena);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.response_, lhs_arena,
-      &other->_impl_.response_, rhs_arena
-  );
+      &_impl_.response_, lhs_arena, &other->_impl_.response_, rhs_arena);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(RpcMessage, _impl_.type_)
-      + sizeof(RpcMessage::_impl_.type_)
-      - PROTOBUF_FIELD_OFFSET(RpcMessage, _impl_.id_)>(
-          reinterpret_cast<char*>(&_impl_.id_),
-          reinterpret_cast<char*>(&other->_impl_.id_));
+      PROTOBUF_FIELD_OFFSET(RpcMessage, _impl_.type_) +
+      sizeof(RpcMessage::_impl_.type_) -
+      PROTOBUF_FIELD_OFFSET(RpcMessage, _impl_.id_)>(
+      reinterpret_cast<char*>(&_impl_.id_),
+      reinterpret_cast<char*>(&other->_impl_.id_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata RpcMessage::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
-      &descriptor_table_rpc_5fmessage_2eproto_getter, &descriptor_table_rpc_5fmessage_2eproto_once,
+      &descriptor_table_rpc_5fmessage_2eproto_getter,
+      &descriptor_table_rpc_5fmessage_2eproto_once,
       file_level_metadata_rpc_5fmessage_2eproto[0]);
 }
 
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace rpc
 PROTOBUF_NAMESPACE_OPEN
-template<> PROTOBUF_NOINLINE ::rpc::RpcMessage*
-Arena::CreateMaybeMessage< ::rpc::RpcMessage >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::rpc::RpcMessage >(arena);
+template <>
+PROTOBUF_NOINLINE ::rpc::RpcMessage*
+Arena::CreateMaybeMessage<::rpc::RpcMessage>(Arena* arena) {
+  return Arena::CreateMessageInternal<::rpc::RpcMessage>(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

@@ -4,10 +4,9 @@
 #include <google/protobuf/service.h>
 
 #include <string>
-#include "photonrpc/rpc_message.pb.h"
 #include "../net/tcp_server.h"
+#include "photonrpc/rpc_message.pb.h"
 
-// TODO: implement a tcp_client to maintain the tcp connection for better performance
 class RpcServer {
  public:
   RpcServer();

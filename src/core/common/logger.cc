@@ -39,12 +39,14 @@ void Logger::Init() {
   // spdlog::flush_on(spdlog::level::err);
   //
 
-  std::shared_ptr<spdlog::logger> mylogger = spdlog::basic_logger_mt("spdlog", Config::GetInstance().log_file_path());
+  std::shared_ptr<spdlog::logger> mylogger =
+      spdlog::basic_logger_mt("spdlog", Config::GetInstance().log_file_path());
   // 设置日志格式. 参数含义: [日志标识符] [日期] [日志级别] [线程号] [数据]
   mylogger->set_pattern("[%n][%Y-%m-%d %H:%M:%S.%e] [%l] [%t]  %v");
   // mylogger->set_level(spdlog::level::debug);
-  mylogger->set_level(spdlog::level::info);
-  spdlog::flush_every(std::chrono::seconds(5)); // 定期刷新日志缓冲区
+  mylogger->set_level(static_cast<spdlog::level::level_enum>(
+      Config::GetInstance().log_level()));
+  spdlog::flush_every(std::chrono::seconds(5));  // 定期刷新日志缓冲区
 
   spdlog::set_default_logger(mylogger);
 }

@@ -17,8 +17,9 @@ void stop_signal_handler(int sig) {
 }
 
 EventLoop::EventLoop()
-  : stopped_(false), wakeup_fd_(eventfd(0, EFD_NONBLOCK | EFD_CLOEXEC)),
-    wakeup_channel_({wakeup_fd_, true, false}) {
+    : stopped_(false),
+      wakeup_fd_(eventfd(0, EFD_NONBLOCK | EFD_CLOEXEC)),
+      wakeup_channel_({wakeup_fd_, true, false}) {
 
   // wakeup_fd_ = eventfd(0, EFD_NONBLOCK | EFD_CLOEXEC);
   // Channel* wakeup_channel = new Channel(wakeup_fd_, true, false);

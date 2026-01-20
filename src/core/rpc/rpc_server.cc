@@ -56,7 +56,6 @@ void RpcServer::HandleRequest(std::string& request, std::string& response) {
   service->CallMethod(method_desc, nullptr, method_request, method_response,
                       nullptr);
 
-
   rpc::RpcMessage response_message;
   response_message.set_id(request_message.id());
   response_message.set_type(rpc::RPC_TYPE_RESPONSE);

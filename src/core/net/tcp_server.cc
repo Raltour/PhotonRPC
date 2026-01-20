@@ -11,13 +11,11 @@ void TcpServer::SetUpTcpServer(
 
   acceptor_.set_new_connection_callback([this, service](int connect_fd) {
     auto tcp_connection = std::make_unique<TcpConnection>(
-                         connect_fd, service, [this](Channel* channel) {
-                           event_loop_.AddChannel(channel);
-                         });
+        connect_fd, service,
+        [this](Channel* channel) { event_loop_.AddChannel(channel); });
     tcp_connection->set_close_callback([this, service](Channel* channel) {
       event_loop_.RemoveChannel(channel);
       close(channel->fd());
-      // TODO: remove tcp_connectin from map.
       // fd_connection_map_.erase(channel->fd());
     });
 

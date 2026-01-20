@@ -4,7 +4,7 @@
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include "spdlog/sinks/basic_file_sink.h"
 
-Logger::Logger() {
+void Logger::Init() {
   // 初始化异步日志的线程池
   // 参数：队列大小=8192，后台线程数=1
   spdlog::init_thread_pool(Config::GetInstance().log_queue_size(),

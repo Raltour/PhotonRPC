@@ -9,28 +9,30 @@
 class Logger {
  public:
   // 单例模式：保证全局只有一个日志管理器
-  static Logger& GetInstance() {
-    static Logger instance;
-    return instance;
-  }
+  // static Logger& GetInstance() {
+  //   static Logger instance;
+  //   return instance;
+  // }
 
   // 禁止拷贝
-  Logger(const Logger&) = delete;
-  Logger& operator=(const Logger&) = delete;
+  // Logger(const Logger&) = delete;
+  // Logger& operator=(const Logger&) = delete;
+
+  static void Init();
 
   // 设置日志级别
-  void SetLogLevel(spdlog::level::level_enum level) {
+  static void SetLogLevel(spdlog::level::level_enum level) {
     spdlog::set_level(level);
   }
 
   // 获取底层spdlog logger
-  std::shared_ptr<spdlog::logger> GetLogger() {
+  static std::shared_ptr<spdlog::logger> GetLogger() {
     return spdlog::default_logger();
   }
 
  private:
-  Logger();
-  ~Logger() { spdlog::shutdown(); }
+  // Logger();
+  // ~Logger() { spdlog::shutdown(); }
 };
 
 // 定义宏，自动填入文件名和行号

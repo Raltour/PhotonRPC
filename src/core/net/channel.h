@@ -10,6 +10,8 @@ class Channel {
  public:
   Channel(const int fd, bool read_event, bool write_event);
 
+  Channel(const int fd);
+
   Channel() {};
 
   epoll_event* event();
@@ -19,6 +21,14 @@ class Channel {
   void set_handle_read(std::function<void()> read_callback);
 
   void set_handle_write(std::function<void()> write_callback);
+
+  void enable_read_event();
+
+  void enable_write_event();
+
+  void disable_read_event();
+
+  void disable_write_event();
 
   void HandleRead();
 

@@ -13,6 +13,8 @@ Channel::Channel(const int fd, bool read_event, bool write_event) {
   }
 }
 
+Channel::Channel(const int fd) : Channel(fd, true, false) {}
+
 epoll_event* Channel::event() {
   return &event_;
 }
@@ -26,6 +28,22 @@ void Channel::set_handle_read(std::function<void()> read_callback) {
 
 void Channel::set_handle_write(std::function<void()> write_callback) {
   write_callback_ = write_callback;
+}
+
+void Channel::enable_read_event() {
+  event_.events |= EPOLLIN;
+}
+
+void Channel::enable_write_event() {
+  event_.events |= EPOLLOUT;
+}
+
+void Channel::disable_read_event() {
+  event_.events &= ~EPOLLIN;
+}
+
+void Channel::disable_write_event() {
+  event_.events &= ~EPOLLOUT;
 }
 
 void Channel::HandleRead() {

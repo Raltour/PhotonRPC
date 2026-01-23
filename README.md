@@ -168,11 +168,16 @@ int main() {
 
 ## 📊 Benchmark
 
+![Benchmard Diagram](doc/imgs/benchmark.png)
+
 Single-threaded Reactor, Echo RPC (100B payload):
 
-* **Environment**: Ubuntu 24.04 (WSL2), AMD Ryzen 7 8845H, 32GB RAM
-* **Connections**: 100 concurrent connections
-* **QPS**: ~14,000
+* **Environment**: Ubuntu 24.04, AMD Ryzen 7 8845H, 32GB RAM
+* **Connections**: 8 concurrent connections
+* **QPS**: ~76k
+* **P50 Latency**: ~50us
+* **P95 Latency**: ~500us
+* **P99 Latency**: ~630s
 
 This benchmark serves as a **baseline measurement**,
 used to validate correctness and identify performance bottlenecks,
@@ -216,7 +221,7 @@ aiming to evolve into a modern distributed communication substrate.
     * Reactor-based networking and epoll multiplexing
     * Protobuf-based RPC and service reflection
 
-* [ ] **v1.1** – Performance & robustness
+* [x] **v1.1** – Performance & robustness
 
     * Deep profiling (perf / gprof), P99 latency optimization
     * ASan / Valgrind for full memory safety

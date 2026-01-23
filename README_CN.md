@@ -5,7 +5,8 @@
 ![Language](https://img.shields.io/badge/language-C%2B%2B20-orange)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-> [📙 中文](README_CN.md) | [📘 English](README.md)
+> [📙 中文](README_CN.md) | [📘 English](README.md)  
+**中文版可能旧于英文版！请以英文版为准！**
  
 
 ## 📌项目概述
@@ -247,7 +248,7 @@ int main() {
     - 实现基础 Reactor 网络库，封装Epoll进行多路复用。
     - 对Protobuf 协议进行封装，支持自定义服务内容。
     - 实现服务端反射调用机制。
-- [ ] **v1.1**: **性能调优与鲁棒性**。
+- [x] **v1.1**: **性能调优与鲁棒性**。
     - 深度 Profiling（使用 perf/gprof），针对 P99 延迟进行测量与优化。
     - 引入 ASan/Valgrind 进行全链路内存检测，确保零内存泄漏。
     - 优化 Critical Path 代码，提升单线程极限 QPS。

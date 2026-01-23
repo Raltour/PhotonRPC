@@ -1,7 +1,7 @@
 #ifndef PHOTONRPC_RPC_H
 #define PHOTONRPC_RPC_H
 
-#include "../src/core/rpc/rpc_channel.h"
+#include "../src/rpc/rpc_channel.h"
 
 #include <google/protobuf/service.h>
 

@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <string>
 #include <vector>
-#include "../src/core/net/codec.h"
+#include "../src/net/codec.h"
 
 // 辅助函数：手动构造一个带 4 字节头部的原始字节流
 std::string ManualEncode(const std::string& payload) {

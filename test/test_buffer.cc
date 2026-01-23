@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include "../src/core/net/buffer.h"
-#include "../src/core/net/codec.h"
+#include "../src/net/buffer.h"
+#include "../src/net/codec.h"
 
 #include <errno.h>
 #include <fcntl.h>

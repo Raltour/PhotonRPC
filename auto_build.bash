@@ -19,7 +19,7 @@ cd "$BUILD_DIR"
 
 # 2. 执行构建
 # 指定使用 Debug 模式并并行编译
-cmake -DCMAKE_BUILD_TYPE=Debug ..
+cmake -DCMAKE_BUILD_TYPE=Release ..
 echo "[2/3] 正在编译项目..."
 make -j$(nproc)
 

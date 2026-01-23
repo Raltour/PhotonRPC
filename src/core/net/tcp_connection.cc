@@ -8,7 +8,10 @@ TcpConnection::TcpConnection(
     int connect_fd, std::function<void(std::string&, std::string&)> service,
     std::function<void(Channel*)> add_connection_callback)
     : service_(service) {
-  channel_ = Channel(connect_fd, true, false);
+  // channel_ = Channel(connect_fd, true, false);
+  channel_ = Channel(connect_fd);
+  channel_.enable_read_event();
+  channel_.disable_write_event();
   channel_.set_handle_read([this] { this->HandleRead(); });
   channel_.set_handle_write([this] { this->HandleWrite(); });
   this->add_connection_callback_ = add_connection_callback;

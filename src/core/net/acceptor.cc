@@ -52,7 +52,10 @@ void Acceptor::StartListen() {
 
   // LOG_INFO("Acceptor start listening on {}:{}", ip, port);
 
-  listen_channel = Channel(listenfd_, true, false);
+  // listen_channel = Channel(listenfd_, true, false);
+  listen_channel = Channel(listenfd_);
+  listen_channel.enable_read_event();
+  listen_channel.disable_write_event();
   listen_channel.set_handle_read([this] {
     struct sockaddr_in client_addr;
     socklen_t client_addr_len = sizeof(client_addr);

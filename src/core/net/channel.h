@@ -8,7 +8,7 @@
 // 是连接上层服务与底层引擎的桥梁
 class Channel {
  public:
-  Channel(const int fd, bool read_event, bool write_event);
+  // Channel(const int fd, bool read_event, bool write_event);
 
   Channel(const int fd);
 

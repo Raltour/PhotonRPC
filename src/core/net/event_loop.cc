@@ -19,11 +19,14 @@ void stop_signal_handler(int sig) {
 EventLoop::EventLoop()
     : stopped_(false),
       wakeup_fd_(eventfd(0, EFD_NONBLOCK | EFD_CLOEXEC)),
-      wakeup_channel_({wakeup_fd_, true, false}) {
+      wakeup_channel_({wakeup_fd_}) {
 
   // wakeup_fd_ = eventfd(0, EFD_NONBLOCK | EFD_CLOEXEC);
   // Channel* wakeup_channel = new Channel(wakeup_fd_, true, false);
   // wakeup_channel_(wakeup_fd_, true, false);
+
+  wakeup_channel_.enable_read_event();
+  wakeup_channel_.disable_read_event();
   wakeup_channel_.set_handle_read([this] {
     uint64_t one;
     int ret = read(wakeup_fd_, &one, sizeof(one));

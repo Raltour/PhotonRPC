@@ -2,18 +2,21 @@
 
 #include <unistd.h>
 
-Channel::Channel(const int fd, bool read_event, bool write_event) {
+// Channel::Channel(const int fd, bool read_event, bool write_event) {
+//   event_ = {};
+//   event_.data.fd = fd;
+//   if (read_event) {
+//     event_.events = EPOLLIN;
+//   }
+//   if (write_event) {
+//     event_.events |= EPOLLOUT;
+//   }
+// }
+
+Channel::Channel(const int fd) {
   event_ = {};
   event_.data.fd = fd;
-  if (read_event) {
-    event_.events = EPOLLIN;
-  }
-  if (write_event) {
-    event_.events |= EPOLLOUT;
-  }
 }
-
-Channel::Channel(const int fd) : Channel(fd, true, false) {}
 
 epoll_event* Channel::event() {
   return &event_;

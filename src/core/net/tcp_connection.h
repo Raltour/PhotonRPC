@@ -14,6 +14,8 @@ class TcpConnection {
 
   TcpConnection() = delete;
 
+  void set_update_callback(std::function<void(Channel*)> update_channel_callback);
+
   void set_close_callback(std::function<void(Channel*)> close_callback);
 
  private:
@@ -32,6 +34,7 @@ class TcpConnection {
   // std::function<void(char* read, char* write)> service_;
   std::function<void(std::string& read, std::string& write)> service_;
   std::function<void(Channel*)> add_connection_callback_;
+  std::function<void(Channel*)> update_channel_callback_;
   std::function<void(Channel*)> close_callback_;
 };
 

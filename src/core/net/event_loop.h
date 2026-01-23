@@ -13,6 +13,8 @@ class EventLoop {
 
   void AddChannel(Channel* channel);
 
+  void UpdateChannel(Channel* channel);
+
   void RemoveChannel(Channel* channel);
 
   void WakeUp();

@@ -85,6 +85,10 @@ void EventLoop::AddChannel(Channel* channel) {
   poller_.RegisterChannel(channel);
 }
 
+void EventLoop::UpdateChannel(Channel* channel) {
+  poller_.UpdateChannel(channel);
+}
+
 void EventLoop::RemoveChannel(Channel* channel) {
   poller_.RemoveChannel(channel);
 }

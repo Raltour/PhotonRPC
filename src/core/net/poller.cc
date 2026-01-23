@@ -48,6 +48,13 @@ void Poller::RegisterChannel(Channel* channel) {
   this->fd_channel_map_.emplace(fd, channel);
 }
 
+void Poller::UpdateChannel(Channel* channel) {
+  int fd = channel->fd();
+
+  epoll_ctl(this->epoll_fd_, EPOLL_CTL_MOD, channel->fd(),
+            channel->event());
+}
+
 void Poller::RemoveChannel(Channel* channel) {
   int fd = channel->fd();
   this->fd_channel_map_.erase(fd);

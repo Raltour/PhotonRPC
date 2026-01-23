@@ -13,6 +13,7 @@ void TcpServer::SetUpTcpServer(
     auto tcp_connection = std::make_unique<TcpConnection>(
         connect_fd, service,
         [this](Channel* channel) { event_loop_.AddChannel(channel); });
+    tcp_connection->set_update_callback([this](Channel* channel) { event_loop_.UpdateChannel(channel); });
     tcp_connection->set_close_callback([this, service](Channel* channel) {
       event_loop_.RemoveChannel(channel);
       close(channel->fd());

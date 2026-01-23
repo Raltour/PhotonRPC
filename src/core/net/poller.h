@@ -20,6 +20,8 @@ class Poller {
 
   void RegisterChannel(Channel* channel);
 
+  void UpdateChannel(Channel* channel);
+
   void RemoveChannel(Channel* channel);
 
   // std::vector<epoll_event>& get_return_events();

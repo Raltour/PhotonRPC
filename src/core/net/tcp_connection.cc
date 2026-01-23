@@ -18,6 +18,10 @@ TcpConnection::TcpConnection(
   add_connection_callback_(&channel_);
 }
 
+void TcpConnection::set_update_callback(std::function<void(Channel*)> update_channel_callback) {
+  update_channel_callback_ = update_channel_callback;
+}
+
 void TcpConnection::set_close_callback(
     std::function<void(Channel*)> close_callback) {
   close_callback_ = close_callback;

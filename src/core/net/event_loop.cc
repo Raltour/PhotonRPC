@@ -26,7 +26,7 @@ EventLoop::EventLoop()
   // wakeup_channel_(wakeup_fd_, true, false);
 
   wakeup_channel_.enable_read_event();
-  wakeup_channel_.disable_read_event();
+  wakeup_channel_.disable_write_event();
   wakeup_channel_.set_handle_read([this] {
     uint64_t one;
     int ret = read(wakeup_fd_, &one, sizeof(one));

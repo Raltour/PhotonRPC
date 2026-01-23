@@ -10,8 +10,8 @@
 #include <vector>
 
 constexpr int NUM_OF_THREADS = 8;
-constexpr int NUM_OF_CLIENT_PER_THREADS = 5;
-constexpr int NUM_OF_REQUESTS_PER_CLIENT = 10000;
+constexpr int NUM_OF_CLIENT_PER_THREADS = 10;
+constexpr int NUM_OF_REQUESTS_PER_CLIENT = 20000;
 
 
 std::chrono::steady_clock::time_point start_time;

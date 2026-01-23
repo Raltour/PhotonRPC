@@ -42,7 +42,12 @@ void TcpConnection::HandleRead() {
       std::string encoded_data = Codec::encode(response_data);
       output_buffer_.WriteData(encoded_data, encoded_data.size());
       // TODO: Improve the performance here.
-      while (!output_buffer_.SendFd(channel_.fd())) {}
+      // while (!output_buffer_.SendFd(channel_.fd())) {}
+      output_buffer_.SendFd(channel_.fd());
+      if (output_buffer_.GetSize() > 0) {
+        channel_.enable_write_event();
+        update_channel_callback_(&channel_);
+      }
       decoded_data.clear();
     }
   } else {
@@ -56,4 +61,9 @@ void TcpConnection::HandleRead() {
 // TODO:: Take good use of reactor write to handle the case when the socket couldn't write right now.
 void TcpConnection::HandleWrite() {
   // send(channel_.event()->data.fd, output_buffer_.PeekData(), max_buffer_size, 0);
+  output_buffer_.SendFd(channel_.fd());
+  if (output_buffer_.GetSize() == 0) {
+    channel_.disable_write_event();
+    update_channel_callback_(&channel_);
+  }
 }

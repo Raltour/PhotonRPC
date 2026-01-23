@@ -9,10 +9,7 @@
 RpcServer* g_rpc_server = nullptr;
 
 void SignalHandler(int signal) {
-  if (g_rpc_server) {
-    delete g_rpc_server;
-    g_rpc_server = nullptr;
-  }
+  // Exit cleanly - the stack-allocated server will be cleaned up automatically
   exit(0);
 }
 
@@ -45,18 +42,15 @@ int main() {
 
   RpcServer rpc_server;
 
-  // rpc_server.ServiceRegister(std::make_unique<EchoServiceImpl>());
-  // rpc_server.ServiceRegister(std::make_unique<CalculateServiceImpl>());
+  rpc_server.ServiceRegister(std::make_unique<EchoServiceImpl>());
+  rpc_server.ServiceRegister(std::make_unique<CalculateServiceImpl>());
 
-  auto cal_service = new CalculateServiceImpl();
-  auto echo_service = new EchoServiceImpl();
-  rpc_server.ServiceRegister(echo_service);
-  rpc_server.ServiceRegister(cal_service);
+  // Set up signal handler for cleanup
+  g_rpc_server = &rpc_server;
+  signal(SIGINT, SignalHandler);
+  signal(SIGTERM, SignalHandler);
 
   rpc_server.StartServer();
-
-  delete cal_service;
-  delete echo_service;
 
   return 0;
 }

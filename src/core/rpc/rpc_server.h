@@ -15,8 +15,7 @@ class RpcServer {
 
   void StartServer();
 
-  // void ServiceRegister(std::unique_ptr<google::protobuf::Service>);
-  void ServiceRegister(google::protobuf::Service*);
+  void ServiceRegister(std::unique_ptr<google::protobuf::Service> service);
 
  private:
   TcpServer tcp_server_;
@@ -25,8 +24,7 @@ class RpcServer {
 
   bool CheckRequest(rpc::RpcMessage request);
 
-  std::map<std::string, google::protobuf::Service*> service_map_;
-  // std::map<std::string, std::unique_ptr<google::protobuf::Service>> service_map_;
+  std::map<std::string, std::unique_ptr<google::protobuf::Service>> service_map_;
 };
 
 #endif  //PHOTONRPC_RPC_SERVER_H

@@ -1,6 +1,7 @@
 #ifndef PHOTONRPC_EVENT_LOOP_H
 #define PHOTONRPC_EVENT_LOOP_H
 
+#include "thread/thread_pool.h"
 #include "poller.h"
 
 class EventLoop {
@@ -27,6 +28,8 @@ class EventLoop {
   int wakeup_fd_;
 
   Channel wakeup_channel_;
+
+  ThreadPool thread_pool_;
 };
 
 #endif  //PHOTONRPC_EVENT_LOOP_H

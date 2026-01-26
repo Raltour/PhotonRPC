@@ -2,6 +2,7 @@
 #include <sys/eventfd.h>
 #include <unistd.h>
 #include <csignal>
+#include <cstdio>
 #include "../common/logger.h"
 
 namespace {
@@ -29,7 +30,8 @@ EventLoop::EventLoop()
   wakeup_channel_.disable_write_event();
   wakeup_channel_.set_handle_read([this] {
     uint64_t one;
-    int ret = read(wakeup_fd_, &one, sizeof(one));
+    ssize_t ret = read(wakeup_fd_, &one, sizeof(one));
+    (void)ret;
     LOG_INFO("Signal: Stoping Loop");
     stopped_ = true;
   });
@@ -71,10 +73,14 @@ void EventLoop::Loop() {
       }
 
       if (event_flag & EPOLLIN) {
-        channel->HandleRead();
+        // channel->HandleRead();
+        thread_pool_.submit<std::function<void()>>(
+            [channel]() { channel->HandleRead(); });
       }
       if (event_flag & EPOLLOUT) {
-        channel->HandleWrite();
+        // channel->HandleWrite();
+        thread_pool_.submit<std::function<void()>>(
+            [channel]() { channel->HandleWrite(); });
       }
     }
   }
@@ -95,5 +101,6 @@ void EventLoop::RemoveChannel(Channel* channel) {
 
 void EventLoop::WakeUp() {
   uint64_t one = 1;
-  write(wakeup_fd_, &one, sizeof(one));
+  ssize_t ret = write(wakeup_fd_, &one, sizeof(one));
+  (void)ret;
 }

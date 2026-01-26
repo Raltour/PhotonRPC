@@ -1,7 +1,5 @@
 #include "thread_pool.h"
 
-#include <mutex>
-
 ThreadPool::ThreadPool() : done(false) {
   int thread_count = 4;
 
@@ -11,7 +9,10 @@ ThreadPool::ThreadPool() : done(false) {
 }
 
 ThreadPool::~ThreadPool() {
-  done = true;
+  {
+    std::unique_lock<std::mutex> lock(mtx);
+    done = true;
+  }
   for (auto& t : threads) {
     if (t.joinable()) {
       t.join();
@@ -19,19 +20,15 @@ ThreadPool::~ThreadPool() {
   }
 }
 
-template <typename FunctionType>
-void ThreadPool::submit(FunctionType f) {
-  std::unique_lock<std::mutex> lock(mtx);
-  work_queue.push(std::function<void()>(f));
-}
-
 void ThreadPool::worker_thread() {
   while (!done) {
-    std::unique_lock<std::mutex> lock(mtx);
     while (!work_queue.empty()) {
-      auto task = work_queue.front();
-      work_queue.pop();
-      task();
+      std::unique_lock<std::mutex> lock(mtx);
+      if (!work_queue.empty()) {
+        auto task = work_queue.front();
+        work_queue.pop();
+        task();
+      }
     }
   }
 }

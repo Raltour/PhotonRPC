@@ -3,8 +3,10 @@
 
 #include <atomic>
 #include <functional>
+#include <mutex>
 #include <queue>
 #include <thread>
+#include <vector>
 
 class ThreadPool {
  public:
@@ -13,7 +15,12 @@ class ThreadPool {
   ~ThreadPool();
 
   template <typename FunctionType>
-  void submit(FunctionType f);
+  void submit(FunctionType f) {
+    {
+      std::unique_lock<std::mutex> lock(mtx);
+      work_queue.push(std::function<void()>(f));
+    }
+  }
 
  private:
   std::atomic<bool> done;

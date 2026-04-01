@@ -28,10 +28,10 @@ int Poller::poll(int timeout) {
 
   if (ret < 0) {
     if (errno == EINTR) {
-      // LOG_DEBUG("poll error: EINTR, continue");
+      LOG_DEBUG("poll error: EINTR, continue");
       return 0;
     }
-    // LOG_ERROR("epoll failure");
+    LOG_ERROR("epoll failure");
     return -1;
   }
   return ret;

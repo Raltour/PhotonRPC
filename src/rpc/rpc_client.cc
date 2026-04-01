@@ -36,25 +36,36 @@ void RpcClient::ConnectToServer() {
   server_address.sin_port = htons(port);
 
   sockfd_ = socket(PF_INET, SOCK_STREAM, 0);
-  assert(sockfd_ >= 0);
+  if (sockfd_ < 0) {
+    LOG_ERROR("Create socket failed!");
+    return;
+  }
 
   if (connect(sockfd_, (struct sockaddr*)&server_address,
               sizeof(server_address)) < 0) {
-    // printf("ConnectToServer error!\n");
-    spdlog::error("Connec To Server error!");
+    LOG_ERROR("Connect to server {}:{} failed!", ip, port);
     close(sockfd_);
     sockfd_ = -1;
+  } else {
+    LOG_INFO("Connected to server {}:{}", ip, port);
   }
 }
 
 void RpcClient::SendMessage(const std::string& message) {
+  if (sockfd_ < 0) {
+    LOG_ERROR("Cannot send message: not connected to server.");
+    return;
+  }
   if (send(sockfd_, message.c_str(), message.size(), 0) <= 0) {
-    // printf("SendMessage error!\n");
-    spdlog::error("Send Message error!");
+    LOG_ERROR("Send message failed!");
   }
 }
 
 int RpcClient::ReceiveMessage(char* buffer, int size) {
+  if (sockfd_ < 0) return -1;
   int read_size = recv(sockfd_, buffer, size, 0);
+  if (read_size < 0) {
+    LOG_ERROR("Receive message failed!");
+  }
   return read_size;
 }

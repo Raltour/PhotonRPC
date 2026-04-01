@@ -1,4 +1,5 @@
 #include "../include/photonrpc/rpc.h"
+#include "../src/common/logger.h"
 #include "calculate_service.pb.h"
 #include "echo_service.pb.h"
 
@@ -9,6 +10,7 @@
 RpcServer* g_rpc_server = nullptr;
 
 void SignalHandler(int signal) {
+  LOG_INFO("Received signal {}, exiting...", signal);
   // Exit cleanly - the stack-allocated server will be cleaned up automatically
   exit(0);
 }
@@ -39,6 +41,7 @@ class EchoServiceImpl : public rpc::EchoService {
 
 
 int main() {
+  Logger::Init();
 
   RpcServer rpc_server;
 

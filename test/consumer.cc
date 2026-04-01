@@ -1,10 +1,13 @@
 #include "../include/photonrpc/rpc.h"
+#include "../src/common/logger.h"
 #include "calculate_service.pb.h"
 #include "echo_service.pb.h"
 
 #include <iostream>
 
 int main() {
+  Logger::Init();
+
   RpcChannel channel;
 
   rpc::EchoService_Stub echo_service_stub(&channel);

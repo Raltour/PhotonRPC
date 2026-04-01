@@ -50,8 +50,8 @@ void TcpConnection::HandleRead() {
       decoded_data.clear();
     }
   } else {
-    // LOG_INFO("TcpConnection(fd:{}) closed",
-    //          static_cast<int>(channel_.event()->data.fd));
+    LOG_INFO("TcpConnection(fd:{}) closed",
+             static_cast<int>(channel_.event()->data.fd));
     // close(channel_.event()->data.fd);
     close_callback_(&channel_);
   }

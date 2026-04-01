@@ -17,13 +17,13 @@ void Config::LoadConfigFile(const std::string& file_path) {
   tinyxml2::XMLDocument doc;
   tinyxml2::XMLError error = doc.LoadFile(file_path.c_str());
   if (error != tinyxml2::XML_SUCCESS) {
-    // LOG_ERROR("Error: " + std::string(doc.ErrorStr()));
+    LOG_ERROR("Error: {}", doc.ErrorStr());
     return;
   }
 
   tinyxml2::XMLElement* root = doc.FirstChildElement("root");
   if (!root) {
-    // LOG_ERROR("No <root>.\n");
+    LOG_ERROR("No <root>.");
     return;
   }
 

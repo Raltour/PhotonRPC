@@ -6,7 +6,7 @@ RpcServer::RpcServer() {
   // Logger::GetInstance();
   // Logger::Init();
 
-  // spdlog::info("RpcServer start.");
+  LOG_INFO("RpcServer start.");
 
   tcp_server_.SetUpTcpServer([this](std::string& read, std::string& write) {
     this->HandleRequest(read, write);
@@ -26,7 +26,7 @@ void RpcServer::HandleRequest(std::string& request, std::string& response) {
   rpc::RpcMessage request_message;
   request_message.ParseFromString(request);
 
-  // spdlog::debug("Received request: \n" + request_message.DebugString());
+  LOG_DEBUG("Received request: \n{}", request_message.DebugString());
 
   if (!CheckRequest(request_message)) {
     rpc::RpcMessage response_message;
@@ -58,45 +58,45 @@ void RpcServer::HandleRequest(std::string& request, std::string& response) {
   delete method_request;
   delete method_response;
 
-  // spdlog::debug("Send response: \n" + response_message.DebugString());
+  LOG_DEBUG("Send response: \n{}", response_message.DebugString());
 }
 
 bool RpcServer::CheckRequest(rpc::RpcMessage request) {
   if (request.type() != rpc::RPC_TYPE_REQUEST) {
-    // spdlog::error("Invalid request type: " + std::to_string(request.type()));
+    LOG_ERROR("Invalid request type: {}", static_cast<int>(request.type()));
     return false;
   }
 
   if (request.method_name().empty()) {
-    // spdlog::error("Empty method name");
+    LOG_ERROR("Empty method name");
     return false;
   }
 
   if (request.service_name().empty()) {
-    // spdlog::error("Empty service name");
+    LOG_ERROR("Empty service name");
     return false;
   }
 
   if (service_map_.find(request.service_name()) == service_map_.end()) {
-    // spdlog::error("Service not found: " + request.service_name());
+    LOG_ERROR("Service not found: {}", request.service_name());
     return false;
   }
 
   auto service = service_map_.find(request.service_name())->second.get();
   // if (service == nullptr) {
-  //   LOG_ERROR("Service not found: " + request.service_name());
+  //   LOG_ERROR("Service not found: {}", request.service_name());
   //   return false;
   // }
 
   auto service_desc = service->GetDescriptor();
   auto method_desc = service_desc->FindMethodByName(request.method_name());
   if (method_desc == nullptr) {
-    // spdlog::error("Method not found: " + request.method_name());
+    LOG_ERROR("Method not found: {}", request.method_name());
     return false;
   }
 
   if (request.request().empty()) {
-    // spdlog::error("Empty request");
+    LOG_ERROR("Empty request");
     return false;
   }
 

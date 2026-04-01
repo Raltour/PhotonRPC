@@ -5,7 +5,7 @@
 void TcpServer::SetUpTcpServer(
     std::function<void(std::string&, std::string&)> service) {
   acceptor_.set_start_listen_callback([this](Channel* channel) {
-    // LOG_DEBUG("Acceptor called listen_callback");
+    LOG_DEBUG("Acceptor called listen_callback");
     event_loop_.AddChannel(channel);
   });
 
@@ -30,7 +30,7 @@ void TcpServer::SetUpTcpServer(
     //       this->event_loop_.RemoveChannel(channel);
     //       this->fd_connection_map_.erase(channel->event()->data.fd);
     //     });
-    // LOG_INFO("TcpServer created new TcpConnection for fd: {}", connect_fd);
+    LOG_INFO("TcpServer created new TcpConnection for fd: {}", connect_fd);
   });
 
   acceptor_.StartListen();

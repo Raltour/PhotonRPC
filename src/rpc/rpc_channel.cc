@@ -33,12 +33,11 @@ void RpcChannel::CallMethod(const google::protobuf::MethodDescriptor* method,
 
   char buffer[1024];
   int read_size = rpc_client_->ReceiveMessage(buffer, 1024);
-  if (read_size <= 0 || read_size >= 1024) {
+  if (read_size < 4 || read_size >= 1024) {
     return;
   }
-  buffer[read_size] = '\0';
   // TODO: Remove the magic number 4 here.
-  std::string recv_data = std::string(buffer + 4);
+  std::string recv_data(buffer + 4, read_size - 4);
 
   rpc_message.ParseFromString(recv_data);
   response->ParseFromString(rpc_message.response());

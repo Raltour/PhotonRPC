@@ -25,7 +25,8 @@ RpcClient::~RpcClient() {
 }
 
 void RpcClient::ConnectToServer() {
-  const char* ip = Config::GetInstance().server_host().c_str();
+  std::string host = Config::GetInstance().server_host();
+  const char* ip = host.c_str();
   int port = Config::GetInstance().server_port();
 
   struct sockaddr_in server_address;

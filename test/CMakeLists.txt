@@ -17,10 +17,14 @@ target_link_libraries(TestBuffer PRIVATE photonrpc GTest::gtest_main)
 add_executable(TestCodec test_codec.cc)
 target_link_libraries(TestCodec PRIVATE photonrpc GTest::gtest_main)
 
+add_executable(TestThreadPool test_thread_pool.cc)
+target_link_libraries(TestThreadPool PRIVATE photonrpc GTest::gtest_main)
+
 #include(GoogleTest)
 #gtest_discover_tests(TestBuffer)
 add_test(NAME TestBuffer COMMAND TestBuffer)
 add_test(NAME TestCodec COMMAND TestCodec)
+add_test(NAME TestThreadPool COMMAND TestThreadPool)
 
 # ---------- Benchmark ----------
 add_executable(Benchmark benchmark.cc ${PROTO_SOURCES})

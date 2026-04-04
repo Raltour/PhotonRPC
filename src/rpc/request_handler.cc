@@ -55,6 +55,19 @@ std::string RpcRequestHandler::HandleRequest(const std::string& request,
   return response;
 }
 
+std::string RpcRequestHandler::HandleRequestSafely(
+    const std::string& request, const ServiceMap& service_map) {
+  try {
+    return HandleRequest(request, service_map);
+  } catch (const std::exception& ex) {
+    LOG_ERROR("Rpc request handling failed: {}", ex.what());
+  } catch (...) {
+    LOG_ERROR("Rpc request handling failed: unknown exception");
+  }
+
+  return BuildErrorResponse(request, "Internal server error");
+}
+
 std::string RpcRequestHandler::BuildErrorResponse(
     const std::string& request, const std::string& error_message) {
   rpc::RpcMessage request_message;

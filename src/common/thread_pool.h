@@ -28,6 +28,8 @@ class ThreadPool {
   auto Enqueue(F&& f, Args&&... args)
       -> std::future<std::invoke_result_t<std::decay_t<F>, std::decay_t<Args>...>>;
 
+  bool TryEnqueue(std::function<void()> task);
+
   size_t WorkerCount() const { return workers_.size(); }
 
  private:

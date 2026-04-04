@@ -19,25 +19,13 @@ RpcServer::RpcServer() : thread_pool_(GetDefaultWorkerCount()) {
 
   tcp_server_.SetUpTcpServer([this](const std::string& read,
                                     TcpConnection::SendResponse send_response) {
-    try {
-      thread_pool_.Enqueue(
-          [this, request = std::string(read),
-           send_response = std::move(send_response)]() mutable {
-            try {
+    if (!thread_pool_.TryEnqueue(
+            [this, request = std::string(read),
+             send_response = std::move(send_response)]() mutable {
               send_response(
-                  RpcRequestHandler::HandleRequest(request, service_map_));
-            } catch (const std::exception& ex) {
-              LOG_ERROR("Rpc request handling failed: {}", ex.what());
-              send_response(RpcRequestHandler::BuildErrorResponse(
-                  request, "Internal server error"));
-            } catch (...) {
-              LOG_ERROR("Rpc request handling failed: unknown exception");
-              send_response(RpcRequestHandler::BuildErrorResponse(
-                  request, "Internal server error"));
-            }
-          });
-    } catch (const std::exception& ex) {
-      LOG_ERROR("Failed to enqueue rpc request: {}", ex.what());
+                  RpcRequestHandler::HandleRequestSafely(request, service_map_));
+            })) {
+      LOG_ERROR("Failed to enqueue rpc request: thread pool is stopping");
       send_response(
           RpcRequestHandler::BuildErrorResponse(read, "Server is shutting down"));
     }

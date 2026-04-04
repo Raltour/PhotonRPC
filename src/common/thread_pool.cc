@@ -27,6 +27,19 @@ ThreadPool::~ThreadPool() {
   workers_.clear();
 }
 
+bool ThreadPool::TryEnqueue(std::function<void()> task) {
+  {
+    std::lock_guard<std::mutex> lock(queue_mutex_);
+    if (stopping_) {
+      return false;
+    }
+    tasks_.emplace(std::move(task));
+  }
+
+  task_semaphore_.release();
+  return true;
+}
+
 void ThreadPool::WorkerLoop(std::stop_token stop_token) {
   while (true) {
     task_semaphore_.acquire();

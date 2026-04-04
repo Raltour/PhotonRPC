@@ -14,6 +14,7 @@
 #include <unistd.h>
 #include <cstring>
 #include <iostream>
+#include <vector>
 
 void RpcChannel::CallMethod(const google::protobuf::MethodDescriptor* method,
                             google::protobuf::RpcController* controller,
@@ -34,20 +35,23 @@ void RpcChannel::CallMethod(const google::protobuf::MethodDescriptor* method,
   std::string encoded_message = Codec::encode(message);
   rpc_client_->SendMessage(encoded_message);
 
-  char buffer[1024];
-  int read_size = rpc_client_->ReceiveMessage(buffer, 1024);
-  if (read_size <= 0) {
+  int response_size = 0;
+  if (!rpc_client_->ReceiveExact(reinterpret_cast<char*>(&response_size),
+                                 sizeof(response_size))) {
     LOG_ERROR("Failed to receive response from server.");
     return;
   }
-  
-  if (read_size < 4) {
-    LOG_ERROR("Received message too short: {} bytes", read_size);
+
+  if (response_size < 0) {
+    LOG_ERROR("Received invalid response size: {}", response_size);
     return;
   }
-  
-  // TODO: Remove the magic number 4 here.
-  std::string recv_data(buffer + 4, read_size - 4);
+
+  std::string recv_data(response_size, '\0');
+  if (!rpc_client_->ReceiveExact(recv_data.data(), response_size)) {
+    LOG_ERROR("Failed to receive complete response body from server.");
+    return;
+  }
 
   if (!rpc_message.ParseFromString(recv_data)) {
     LOG_ERROR("Failed to parse RpcMessage from received data.");

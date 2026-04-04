@@ -10,7 +10,7 @@ class RpcClient {
 
   void SendMessage(const std::string& message);
 
-  int ReceiveMessage(char* buffer, int size);
+  bool ReceiveExact(char* buffer, int size);
 
  private:
   int sockfd_;

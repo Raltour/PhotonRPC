@@ -61,11 +61,21 @@ void RpcClient::SendMessage(const std::string& message) {
   }
 }
 
-int RpcClient::ReceiveMessage(char* buffer, int size) {
-  if (sockfd_ < 0) return -1;
-  int read_size = recv(sockfd_, buffer, size, 0);
-  if (read_size < 0) {
-    LOG_ERROR("Receive message failed!");
+bool RpcClient::ReceiveExact(char* buffer, int size) {
+  if (sockfd_ < 0) {
+    return false;
   }
-  return read_size;
+
+  int total_read = 0;
+  while (total_read < size) {
+    int read_size = recv(sockfd_, buffer + total_read, size - total_read, 0);
+    if (read_size <= 0) {
+      if (read_size < 0) {
+        LOG_ERROR("Receive message failed!");
+      }
+      return false;
+    }
+    total_read += read_size;
+  }
+  return true;
 }

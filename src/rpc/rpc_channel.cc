@@ -16,6 +16,10 @@
 #include <iostream>
 #include <vector>
 
+namespace {
+constexpr int kMaxResponseBytes = 16 * 1024 * 1024;
+}
+
 void RpcChannel::CallMethod(const google::protobuf::MethodDescriptor* method,
                             google::protobuf::RpcController* controller,
                             const google::protobuf::Message* request,
@@ -42,7 +46,7 @@ void RpcChannel::CallMethod(const google::protobuf::MethodDescriptor* method,
     return;
   }
 
-  if (response_size < 0) {
+  if (response_size <= 0 || response_size > kMaxResponseBytes) {
     LOG_ERROR("Received invalid response size: {}", response_size);
     return;
   }

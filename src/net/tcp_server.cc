@@ -14,7 +14,10 @@ void TcpServer::SetUpTcpServer(TcpConnection::MessageCallback service) {
                                             int connect_fd) mutable {
     auto tcp_connection = std::make_shared<TcpConnection>(
         connect_fd, &event_loop_, service,
-        [this](int fd) { fd_connection_map_.erase(fd); });
+        [this](int fd) {
+          event_loop_.QueueInLoop(
+              [this, fd] { fd_connection_map_.erase(fd); });
+        });
 
     fd_connection_map_[connect_fd] = tcp_connection;
     tcp_connection->ConnectEstablished();

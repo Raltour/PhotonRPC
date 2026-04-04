@@ -3,8 +3,10 @@
 #include "calculate_service.pb.h"
 #include "echo_service.pb.h"
 
+#include <chrono>
 #include <csignal>
 #include <memory>
+#include <thread>
 
 // Global pointer for signal handler
 RpcServer* g_rpc_server = nullptr;
@@ -35,6 +37,9 @@ class EchoServiceImpl : public rpc::EchoService {
   void Echo(google::protobuf::RpcController* controller,
             const rpc::EchoRequest* request, rpc::EchoResponse* response,
             google::protobuf::Closure* done) override {
+    if (request->sentence() == "__slow__") {
+      std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    }
     response->set_result(request->sentence());
   }
 };

@@ -396,9 +396,61 @@ def test_concurrent_requests():
     print(f"✓ 并发请求成功 ({success_count}/10)")
 
 
+def test_slow_requests_do_not_block_others():
+    """测试8: 慢业务请求不会阻塞其他连接"""
+    print("\n[测试8] 慢业务请求不会阻塞其他连接")
+
+    slow_thread_count = 6
+    results = []
+    results_lock = threading.Lock()
+
+    def slow_worker(index: int):
+        client = RpcClient()
+        try:
+            request_data = build_echo_request("__slow__")
+            response_data = client.call_rpc("EchoService", "Echo", request_data)
+            success = response_data is not None and parse_echo_response(response_data) == "__slow__"
+            with results_lock:
+                results.append(("slow", index, success))
+        finally:
+            client.close()
+
+    slow_threads = []
+    start_time = time.time()
+    for i in range(slow_thread_count):
+        thread = threading.Thread(target=slow_worker, args=(i,))
+        slow_threads.append(thread)
+        thread.start()
+
+    time.sleep(0.05)
+
+    fast_client = RpcClient()
+    try:
+        fast_request = build_add_request(20, 22)
+        fast_response = fast_client.call_rpc("CalculateService", "Add", fast_request)
+        fast_elapsed = time.time() - start_time
+        assert fast_response is not None, "快速请求响应不应为空"
+        fast_result = parse_add_response(fast_response)
+        assert fast_result == 42, f"期望 42，得到 {fast_result}"
+        assert fast_elapsed < 0.35, f"快速请求被慢业务阻塞，耗时 {fast_elapsed:.3f}s"
+    finally:
+        fast_client.close()
+
+    for thread in slow_threads:
+        thread.join()
+
+    slow_success_count = sum(1 for kind, _, success in results if kind == "slow" and success)
+    assert slow_success_count == slow_thread_count, (
+        f"期望 {slow_thread_count} 个慢请求全部成功，得到 {slow_success_count} 个"
+    )
+    print(
+        f"✓ 快速请求耗时 {fast_elapsed:.3f}s，慢请求成功 {slow_success_count}/{slow_thread_count}"
+    )
+
+
 def test_invalid_service_name():
-    """测试8: 无效的服务名"""
-    print("\n[测试8] 无效的服务名")
+    """测试9: 无效的服务名"""
+    print("\n[测试9] 无效的服务名")
     client = RpcClient()
     try:
         request_data = build_echo_request("test")
@@ -413,8 +465,8 @@ def test_invalid_service_name():
 
 
 def test_invalid_method_name():
-    """测试9: 无效的方法名"""
-    print("\n[测试9] 无效的方法名")
+    """测试10: 无效的方法名"""
+    print("\n[测试10] 无效的方法名")
     client = RpcClient()
     try:
         request_data = build_echo_request("test")
@@ -428,8 +480,8 @@ def test_invalid_method_name():
 
 
 def test_invalid_protobuf_data():
-    """测试10: 无效的protobuf数据"""
-    print("\n[测试10] 无效的protobuf数据")
+    """测试11: 无效的protobuf数据"""
+    print("\n[测试11] 无效的protobuf数据")
     client = RpcClient()
     try:
         invalid_data = b"invalid protobuf data\x00\x01\x02"
@@ -443,8 +495,8 @@ def test_invalid_protobuf_data():
 
 
 def test_multiple_sequential_calls():
-    """测试11: 多次顺序调用（连接复用）"""
-    print("\n[测试11] 多次顺序调用")
+    """测试12: 多次顺序调用（连接复用）"""
+    print("\n[测试12] 多次顺序调用")
     client = RpcClient()
     try:
         # 第一次调用
@@ -474,8 +526,8 @@ def test_multiple_sequential_calls():
 
 
 def test_connection_refused():
-    """测试12: 服务器未启动时的连接错误"""
-    print("\n[测试12] 连接被拒绝（服务器未启动）")
+    """测试13: 服务器未启动时的连接错误"""
+    print("\n[测试13] 连接被拒绝（服务器未启动）")
     # 使用一个不存在的端口
     client = RpcClient(SERVER_HOST, 99999)
     try:
@@ -491,8 +543,8 @@ def test_connection_refused():
 
 
 def test_special_characters():
-    """测试13: 特殊字符处理"""
-    print("\n[测试13] 特殊字符处理")
+    """测试14: 特殊字符处理"""
+    print("\n[测试14] 特殊字符处理")
     client = RpcClient()
     try:
         special_strings = [
@@ -570,6 +622,7 @@ def run_all_tests():
                 test_negative_numbers,
                 test_special_characters,
                 test_concurrent_requests,
+                test_slow_requests_do_not_block_others,
             ]),
             ("错误处理测试", [
                 test_connection_refused,

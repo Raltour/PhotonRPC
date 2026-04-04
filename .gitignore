@@ -13,3 +13,9 @@ CmakeSettings.json
 
 .cache/
 compile_commands.json
+
+*.pyc
+
+.codex
+
+*.log

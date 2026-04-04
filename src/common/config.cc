@@ -1,11 +1,18 @@
 #include "config.h"
+
+#include <filesystem>
 #include <iostream>
 #include <memory>
+
 #include "common/logger.h"
 #include "tinyxml2/tinyxml2.h"
 
 Config& Config::GetInstance() {
-  static Config config("../conf/photonrpc.xml");
+  std::string config_path = "../conf/photonrpc.xml";
+  if (!std::filesystem::exists(config_path)) {
+    config_path = "conf/photonrpc.xml";
+  }
+  static Config config(config_path);
   return config;
 }
 

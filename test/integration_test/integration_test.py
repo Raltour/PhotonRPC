@@ -65,11 +65,11 @@ def build_rpc_message(message_id: int, message_type: int,
     return rpc_msg.SerializeToString()
 
 
-def parse_rpc_response(data: bytes) -> Optional[bytes]:
-    """解析RPC响应消息，返回response字段内容"""
+def parse_rpc_response(data: bytes) -> bytes:
+    """解析RPC响应消息，返回response字段内容，允许为空字节串"""
     rpc_msg = rpc_message_pb2.RpcMessage()
     rpc_msg.ParseFromString(data)
-    return rpc_msg.response if rpc_msg.response else None
+    return rpc_msg.response
 
 
 # Echo和Calculate服务的protobuf消息构造

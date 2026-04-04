@@ -2,6 +2,22 @@
 
 #include "../common/logger.h"
 
+namespace {
+std::string BuildErrorResponseMessage(const rpc::RpcMessage* request_message,
+                                      const std::string& error_message) {
+  rpc::RpcMessage response_message;
+  if (request_message != nullptr) {
+    response_message.set_id(request_message->id());
+  }
+  response_message.set_type(rpc::RPC_TYPE_ERROR);
+  response_message.set_response(error_message);
+
+  std::string response;
+  response_message.SerializeToString(&response);
+  return response;
+}
+}  // namespace
+
 std::string RpcRequestHandler::HandleRequest(const std::string& request,
                                              const ServiceMap& service_map) {
   std::string response;
@@ -11,12 +27,7 @@ std::string RpcRequestHandler::HandleRequest(const std::string& request,
   LOG_DEBUG("Received request: \n{}", request_message.DebugString());
 
   if (!CheckRequest(request_message, service_map)) {
-    rpc::RpcMessage response_message;
-    response_message.set_id(request_message.id());
-    response_message.set_type(rpc::RPC_TYPE_ERROR);
-    response_message.set_response("Invalid request");
-    response_message.SerializeToString(&response);
-    return response;
+    return BuildErrorResponseMessage(&request_message, "Invalid request");
   }
 
   auto service = service_map.find(request_message.service_name())->second.get();
@@ -42,6 +53,15 @@ std::string RpcRequestHandler::HandleRequest(const std::string& request,
 
   LOG_DEBUG("Send response: \n{}", response_message.DebugString());
   return response;
+}
+
+std::string RpcRequestHandler::BuildErrorResponse(
+    const std::string& request, const std::string& error_message) {
+  rpc::RpcMessage request_message;
+  if (!request_message.ParseFromString(request)) {
+    return BuildErrorResponseMessage(nullptr, error_message);
+  }
+  return BuildErrorResponseMessage(&request_message, error_message);
 }
 
 bool RpcRequestHandler::CheckRequest(const rpc::RpcMessage& request,

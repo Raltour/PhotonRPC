@@ -16,6 +16,8 @@ class RpcRequestHandler {
 
   static std::string HandleRequest(const std::string& request,
                                    const ServiceMap& service_map);
+  static std::string BuildErrorResponse(const std::string& request,
+                                        const std::string& error_message);
 
  private:
   static bool CheckRequest(const rpc::RpcMessage& request,

@@ -1,5 +1,7 @@
 #include "rpc_server.h"
+
 #include "../common/logger.h"
+#include "request_handler.h"
 
 RpcServer::RpcServer() {
   // Initialize logger singleton
@@ -8,8 +10,9 @@ RpcServer::RpcServer() {
 
   LOG_INFO("RpcServer start.");
 
-  tcp_server_.SetUpTcpServer([this](std::string& read, std::string& write) {
-    this->HandleRequest(read, write);
+  tcp_server_.SetUpTcpServer([this](const std::string& read,
+                                    TcpConnection::SendResponse send_response) {
+    send_response(RpcRequestHandler::HandleRequest(read, service_map_));
   });
 }
 

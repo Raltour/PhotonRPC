@@ -4,26 +4,42 @@
 #include "buffer.h"
 #include "net/channel.h"
 
+#include <atomic>
+#include <functional>
+#include <memory>
 #include <string>
 
-class TcpConnection {
+class EventLoop;
+
+class TcpConnection : public std::enable_shared_from_this<TcpConnection> {
  public:
-  TcpConnection(int connect_fd,
-                std::function<void(std::string&, std::string&)> service,
-                std::function<void(Channel*)> add_connection_callback);
+  using SendResponse = std::function<void(std::string)>;
+  using MessageCallback =
+      std::function<void(const std::string&, SendResponse)>;
+  using CloseCallback = std::function<void(int)>;
+
+  TcpConnection(int connect_fd, EventLoop* event_loop,
+                MessageCallback message_callback,
+                CloseCallback close_callback);
 
   TcpConnection() = delete;
 
-  void set_update_callback(std::function<void(Channel*)> update_channel_callback);
-
-  void set_close_callback(std::function<void(Channel*)> close_callback);
+  void ConnectEstablished();
 
  private:
+  void Send(std::string response_data);
+
+  void SendInLoop(std::string response_data);
+
+  void HandleClose();
+
   Channel channel_;
+  EventLoop* event_loop_;
 
   const int max_buffer_size = 1024;
   Buffer input_buffer_;
   Buffer output_buffer_;
+  std::atomic<bool> closed_{false};
 
   // 注册给epoll的函数
   void HandleRead();
@@ -31,11 +47,8 @@ class TcpConnection {
   //注册给epoll的函数
   void HandleWrite();
 
-  // std::function<void(char* read, char* write)> service_;
-  std::function<void(std::string& read, std::string& write)> service_;
-  std::function<void(Channel*)> add_connection_callback_;
-  std::function<void(Channel*)> update_channel_callback_;
-  std::function<void(Channel*)> close_callback_;
+  MessageCallback message_callback_;
+  CloseCallback close_callback_;
 };
 
 #endif  //PHOTONRPC_TCP_CONNECTION_H

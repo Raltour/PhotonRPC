@@ -1,35 +1,23 @@
 #include "tcp_server.h"
 
+#include <utility>
+
 #include "../common/logger.h"
 
-void TcpServer::SetUpTcpServer(
-    std::function<void(std::string&, std::string&)> service) {
+void TcpServer::SetUpTcpServer(TcpConnection::MessageCallback service) {
   acceptor_.set_start_listen_callback([this](Channel* channel) {
     LOG_DEBUG("Acceptor called listen_callback");
     event_loop_.AddChannel(channel);
   });
 
-  acceptor_.set_new_connection_callback([this, service](int connect_fd) {
-    auto tcp_connection = std::make_unique<TcpConnection>(
-        connect_fd, service,
-        [this](Channel* channel) { event_loop_.AddChannel(channel); });
-    tcp_connection->set_update_callback([this](Channel* channel) { event_loop_.UpdateChannel(channel); });
-    tcp_connection->set_close_callback([this, service](Channel* channel) {
-      event_loop_.RemoveChannel(channel);
-      close(channel->fd());
-      // fd_connection_map_.erase(channel->fd());
-    });
+  acceptor_.set_new_connection_callback([this, service = std::move(service)](
+                                            int connect_fd) mutable {
+    auto tcp_connection = std::make_shared<TcpConnection>(
+        connect_fd, &event_loop_, service,
+        [this](int fd) { fd_connection_map_.erase(fd); });
 
-    if (fd_connection_map_.contains(connect_fd)) {
-      fd_connection_map_.erase(connect_fd);
-    }
-    fd_connection_map_.insert({connect_fd, std::move(tcp_connection)});
-
-    // fd_connection_map_.find(connect_fd)
-    //     ->second->set_close_callback([this](Channel* channel) {
-    //       this->event_loop_.RemoveChannel(channel);
-    //       this->fd_connection_map_.erase(channel->event()->data.fd);
-    //     });
+    fd_connection_map_[connect_fd] = tcp_connection;
+    tcp_connection->ConnectEstablished();
     LOG_INFO("TcpServer created new TcpConnection for fd: {}", connect_fd);
   });
 
